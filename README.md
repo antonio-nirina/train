@@ -1,12 +1,12 @@
 ### JAVASCRITP
-Vous apprendrez à programmer avec les technologies les plus récentes comme le JavaScript front et back-end. Node JS, React, et React Native. En plus de ces langages, vous serez formés aux méthodes de gestion de projets les plus utilisées dans l’univers web.
+Vous apprendrez à programmer avec les technologies les plus récentes comme le JavaScript front et back-end. Node JS, React, et React Native.
 #### Notion HTML/CSS 
 	Decoupage maquette****
 	Integrer HTML/CSS**
 #### Introduction JS
 	JS Base (Algorithme...)
 	Jquery***
-	Nodejs***
+	Nodejs***(API REST)
 	Mysql *** 
 	Reactjs/Vuejs
 #### Introduction Mobile (Android)
@@ -16,6 +16,11 @@ Vous apprendrez à programmer avec les technologies les plus récentes comme le 
 #### Notion Protocole SSH (Secure Shell)
 	Deploiement sur AWS (avec Gitlab)
 #### Notion Scritp BASH
-#### Notion langage Bas Niveau (Golang,C)
+#### Notion langage Bas Niveau (C)
+
+#### Project: Gestion Reservation en ligne Taxi-Brousse (Toute les villes de Mscar)
+ 	- Front Reactjs
+ 	- Back-end Nodejs
+ 	- React Native pour Mobile
 
 

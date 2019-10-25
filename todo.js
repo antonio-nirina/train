@@ -31,47 +31,69 @@ const listAStyle = {
   "border": "1px solid rgba(175,42,47,0.2)"
 }
 
+const all = {
+  "position": "absolute",
+  "borderRight": "1px solid gray",
+  "top": "29px",
+  "left": "15px",
+  "borderRadius": "25px 0 0 25px",
+  "border": "1px solid",
+}
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      name: [
-        {"name":"Antonio","fisrt":"Nirina"},
-        {"name":"Antonio","fisrt":"Nirina"},
-        {"name":"Antonio","fisrt":"Nirina"},
-        {"name":"Antonio","fisrt":"Nirina"},
-        {"name":"Antonio","fisrt":"Nirina"},
-        {"name":"Antonio","fisrt":"Nirina"},
-        ]
     };
   }
 
   render() {
     return (
-      <div className="main" style={{'backgroundColor':'#37c936'}}>
-        <p>
-         Hello TODO MVC REACTJS
-        </p>
-        <div className="input-group">
-          <input type="text" class="form-control" style={{'borderRaduis':'75px'}} />
-          <div className="input-group-addon hover-cursor">
-            <i className="fa fa-plus-circle fa-2x"></i>
+      <div Name="main container">
+        <div className="insert col-sm-6" style={{"margin":"0 auto"}}>
+          <div className="title" style={{"text-align":"center","margin": "5px 0px","position": "relative"}}>
+            Hello TODO MVC REACTJS
           </div>
-        </div>
-        <div style={{"margin":"5px 0px"}}>
-          {this.state.name.map((e,i) => {
-            return(
-              <div key={i}>
-              <span>
-                  <i  className={`fa fa-lg ${i == 1 ? 'fa fa-circle-thin':'fa-check-circle-o' }`}></i>
-              </span>
-                <span style={{'marginLeft':'5px'}}>{e.name+" "+e.fisrt}</span>
-                <span style={{'float':'right'}}>
-                  <i  className="fa fa-trash-o fa-lg text-danger"></i>
-                </span>
+          <div>
+            <input type="text" className="form-control" name="add" 
+            style={{"borderRadius": "25px 0 0 25px","paddingLeft": "39px","paddingRight": "44px"}}/>
+          </div>
+          <div className="all">
+            <i className="fa fa-chevron-down fa-1x" style={{"color":"gray","padding": "1px 11px","lineHeight":"35px"}}></i>
+          </div>
+          <div className="add">
+            <i className="fa fa-plus-circle fa-2x" style={{"borderRadius": "25px","lineHeight":"38px"}}></i>
+          </div>
+          <div className="list-todo">
+            <div className="mb" style={{"marginTop":"4px"}}>
+              <i style={{"color": "#37c936"}} className="fa fa-lg fa fa-check-circle-o"></i>
+              <span>Test</span>
+              <i style={{"float": "right"}}className="fa fa-trash-o fa-lg text-danger"></i>
+            </div>
+            <div className="mb" style={{"marginTop": "4px"}}>
+              <i style={{"color":"#37c936"}} className="fa fa-lg fa fa-check-circle-o"></i>
+              <span>Test</span>
+              <i style={{"float":"right"}} className="fa fa-trash-o fa-lg text-danger"></i>
+            </div>
+            <div className="mb" style={{"marginTop":"4px"}}>
+              <i style={{"color":"#37c936"}} className="fa fa-lg fa fa-circle-thin"></i>
+              <span>Test</span>
+              <i style={{"float":"right"}} className="fa fa-trash-o fa-lg text-danger"></i>
+            </div>
+            <div className="mb" style={{"marginTop": "4px"}}>
+              <i style={{"color": "#37c936"}} className="fa fa-lg fa fa-check-circle-o"></i>
+              <span>Test</span>
+              <i style={{"float":"right"}} className="fa fa-trash-o fa-lg text-danger"></i>
+            </div>
+            <div className="mb" style={{"marginTop": "4px"}}>
+              <span style={{"float": "left"}}>4 items</span>
+              <div className="liste">
+                <a style={{"color": "#fff"}} href="#">All</a>
+                <a href="#">Active</a>
+                <a href="#">Completed</a>
               </div>
-            )
-          })}
+            </div>
+          </div>      
         </div>
       </div>
     );

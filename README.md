@@ -6,17 +6,17 @@ Vous apprendrez à programmer avec les technologies les plus récentes comme le 
 #### Introduction JS
 	JS Base (Algorithme...)
 	Jquery***
-	Nodejs***(API REST)
-	Mysql *** 
 	Reactjs/Vuejs
 #### Introduction Mobile (Android)
 	ReactNative***
 #### GIT 
-	Integration Continous/Deploiement continu (gitlab,Travis Heroku)
+	Integration Continous/Deploiement continu (gitlab-CI,Travis Heroku)
 #### Notion Protocole SSH (Secure Shell)
 	Deploiement sur AWS (avec Gitlab)
-#### Notion Scritp BASH
-#### Notion langage Bas Niveau (C)
+#### Notion Scritp BASH ou Shell,bat(windows)
+#### Notion sur partie Back-end 
+	Nodejs***(API REST)
+	Mysql *** 
 
 #### Project: Gestion Reservation en ligne Taxi-Brousse (Toute les villes de Mscar)
  	- Front Reactjs

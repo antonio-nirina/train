@@ -1,0 +1,42 @@
+
+/*
+display: block => vao azo ampesaina padding
+parent:heigth => même heigth enfant par line-heigth; 
+*/
+
+.add{
+	background-color: gray;
+    display: block;
+    width: 47px;
+    text-align: center;
+    position: absolute;
+	top: 29px;
+	right: 15px;
+	height: 38px;
+}
+
+.mb{
+	padding: 6px 4px;
+    border-radius: 10px solid red;
+    border: yellowgreen;
+    border-radius: 5px;
+    background-color: gray;
+}
+
+.liste{
+	width: 166px;
+	margin: 0 auto;
+}
+.liste a{
+	text-decoration: none;
+	border: 1px solid rgba(175,42,47,0.2);
+}
+
+.all{
+	position: absolute;
+	border-right: 1px solid gray;
+	top: 29px;
+	left: 15px;
+	border-radius: 25px 0 0 25px;
+	border: 1px solid;
+}

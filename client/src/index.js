@@ -7,17 +7,17 @@ import { BrowserRouter as Router, Route, Switch } from'react-router-dom';
 
 import Home from './components/home';
 import Trip from './components/trip';
+import Init from './components/init';
 
 
 
 ReactDOM.render(
-	<Provider >
-			<Router>
-				<Switch>
-					<Route exact path="/" component={Home}/>
-					<Route  path="/trip" component={Trip}/>
-				</Switch>
-			</Router>
-		</Provider>
+	<Router>
+		<Switch>
+			<Route exact path="/" component={Home}/>
+			<Route  path="/trip" component={Trip}/>
+			<Route  path="/init" component={Init}/>
+		</Switch>
+	</Router>
 
 , document.getElementById('root'));

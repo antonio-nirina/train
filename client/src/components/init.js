@@ -52,13 +52,15 @@ class Init extends Component {
   }
 
   onSend(){
-    const obj = {
-      'data':this.state.value,
-      'active':false
-    }
-    // Mahagaga mitsy ty klé
-    this.state.list.push(obj)
-    this.setState({value: ''});
+    if (this.state.value) {
+      const obj = {
+        'data':this.state.value,
+        'active':false
+      }
+      // Mahagaga mitsy ty klé
+      this.state.list.push(obj)
+      this.setState({value: ''});
+    }  
   }
 
   handleChange(event){

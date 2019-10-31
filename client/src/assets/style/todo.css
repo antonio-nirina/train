@@ -40,3 +40,9 @@ parent:heigth => même heigth enfant par line-heigth;
 	border-radius: 25px 0 0 25px;
 	border: 1px solid;
 }
+
+.title-f{
+	color: #515365;
+	font-size: 34px;
+	font-weight: 300px;
+}

@@ -27,4 +27,7 @@ https://stackblitz.com/edit/react-dfdblj
 #### Project: Gestion
 https://stackblitz.com/edit/react-wpbpxy
 
+#### Docker Compose Gitlab-CI Vuejs
+https://github.com/codingfriend1/Feathers-Vue
+
 

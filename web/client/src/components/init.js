@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './header';
+import Footer from './footer';
 import '../assets/style/todo.css';
 
 class Init extends Component {
@@ -119,6 +120,7 @@ class Init extends Component {
             }  
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

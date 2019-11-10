@@ -10,6 +10,9 @@ const Home = () => {
 			<Header />
 			<div className="container">
 				<h2 className="title-f text-center" style={{'marginBottom':'26px'}}>React formation</h2>
+				<div className="">
+				
+				</div>
 				<div className="list-cars row">
 					<div className="prem-cars col-sm-4 col-12 text-center">
 						<img src={require("../assets/image/bus-lite.jpg")} className="cars" />

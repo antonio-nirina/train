@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from'react-router-dom';
 import Home from './components/home';
 import Trip from './components/trip';
 import Init from './components/init';
+import Login from './components/login';
 
 
 
@@ -17,6 +18,7 @@ ReactDOM.render(
 			<Route exact path="/" component={Home}/>
 			<Route  path="/trip" component={Trip}/>
 			<Route  path="/init" component={Init}/>
+			<Route  path="/login" component={Login}/>
 		</Switch>
 	</Router>
 

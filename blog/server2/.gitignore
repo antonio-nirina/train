@@ -1,2 +1,15 @@
-node_modules
-.env
+/.env
+/vendor/
+/server2
+*~
+*.orig
+*.rej
+*.exe
+.*.swp
+core
+*.cgo*.go
+*.cgo*.c
+_cgo_*
+_obj
+_test
+_testmain.go

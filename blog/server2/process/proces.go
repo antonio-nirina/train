@@ -3,15 +3,18 @@ package process
 import (
 	"fmt"
 	"log"
+	"net/http"
 
+	"github.com/antonio-nirina/formation/blog/server2/auth"
 	"github.com/antonio-nirina/formation/blog/server2/model"
 	"github.com/jinzhu/gorm"
+	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 type Process struct {
 	DB *gorm.DB
-	// Router *mux.Router
+	Router *mux.Router
 }
 
 func (process *Process) Initialize(dbUser string, dbPassword string, dbHost string, dbName string) { //*sql.DB
@@ -26,6 +29,13 @@ func (process *Process) Initialize(dbUser string, dbPassword string, dbHost stri
 		fmt.Println("We are connected to the database Mysql")
 	}
 
-	process.DB.AutoMigrate(&model.Post{}, &model.User{}, &model.Order{}, &model.Product{})
-	// process.Router = mux.NewRouter()
+	process.DB.AutoMigrate(&model.Post{}, &model.User{}, &model.Comment{})
+	// Route
+	process.Router = mux.NewRouter()
+	process.Router.HandleFunc("/", process.Home).Methods("GET")
+	process.Router.HandleFunc("/register", process.CreateUser).Methods("POST")
+	process.Router.HandleFunc("/login", process.Signin).Methods("POST")
+	process.Router.HandleFunc("/api/create/post", auth.HelperTokenMiddleware(process.CreatePost)).Methods("POST")
+	fmt.Println("Run in 8080")
+	log.Fatal(http.ListenAndServe(":8080", process.Router))
 }

@@ -1,4 +1,4 @@
-package handler
+package process
 
 import (
 	"encoding/json"
@@ -60,7 +60,7 @@ func (process *Process) CreatePost(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	email, err := jwt.GetUserCurrent(r)
+	email, err := auth.GetUserCurrent(r)
 
 	if err != nil {
 		response.ErrorJson(w, http.StatusBadRequest, "user not found")
@@ -150,7 +150,7 @@ func (process *Process) Signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := jwt.CreateToken(check.Email)
+	token, err := auth.CreateToken(check.Email)
 	if err != nil {
 		response.ErrorJson(w, http.StatusBadRequest, "error interne")
 		return

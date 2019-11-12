@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 	// "fmt"
-	// "github.com/jinzhu/gorm"
+	"github.com/jinzhu/gorm"
 )
 
 type Post struct {

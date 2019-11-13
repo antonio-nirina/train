@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
-import {Link} from 'react-router-dom';
+// import {Link} from 'react-router-dom';
 import 'antd/dist/antd.css';
-import { List, Avatar, Button, Skeleton } from 'antd';
+import { List, Avatar, Skeleton } from 'antd';
 import Header from './header';
 import Footer from './footer';
 
@@ -9,6 +9,11 @@ const style ={
   textAlign: 'center',
   height: 32,
   lineHeight: '32px',
+}
+
+const like = {
+	"fontSize":"20px",
+	'color':'#1890ff'
 }
 
 const Home = () => {
@@ -40,7 +45,20 @@ const { loading, user } = userRequest;
 	        dataSource={user ? user:""}
 	        renderItem={ item => (
 	          <List.Item
-	            actions={[<a style={{'color':'#1890ff'}} key="list-loadmore-edit">edit</a>, <a style={{'color':'#1890ff'}} key="list-loadmore-more">delete</a>]}
+	            actions={[
+	            	<a style={{'color':'#1890ff'}} key="list-loadmore-more">
+	            	like
+	            	<p>0</p>
+	            	</a>,
+	            	<a style={{'color':'#1890ff'}} key="list-loadmore-edit">
+	            	edit
+	            	<p>&nbsp;</p>
+	            	</a>,
+	            	 <a style={{'color':'#1890ff'}} key="list-loadmore-more">
+	            	 comment
+	            	 <p>&nbsp;</p>
+	            	 </a>
+	           	]}
 	          >
 	          <Skeleton avatar title={false} loading={item.loading} active>
 	              <List.Item.Meta
@@ -50,6 +68,7 @@ const { loading, user } = userRequest;
 	                title={<a href="https://ant.design">{item.name.last}</a>}
 	                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
 	              />
+	              <span style={like}><i className="fa fa-thumbs-up"></i></span>
 	            </Skeleton>
 	          </List.Item>
 	        )}

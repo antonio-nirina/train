@@ -74,7 +74,7 @@ exports.signup = function(req, res, next) {
 /**
  * create private_key and public_key
  * openssl genpkey -out config/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
- * openssl pkey -in config/private.pem -out config/jwt/public.pem -pubout
+ * openssl pkey -in config/private.pem -out config/public.pem -pubout
  *
  * @param req
  * @param res

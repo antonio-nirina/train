@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // Define our model
 const postSchema = new Schema({
   title: String,
-  content: String,  // html
+  content: String,  
   authorId: String,
   authorName: String,
   time: Date,

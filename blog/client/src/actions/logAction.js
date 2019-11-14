@@ -19,6 +19,7 @@ export function getUserConnected(obj,historyPush){
           });
         if (res.code === 200) {
           localStorage.setItem('token', res.token);
+          historyPush('/');
         } else {
           historyPush('/login');
         }

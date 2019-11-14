@@ -10,7 +10,7 @@ parent:heigth => même heigth enfant par line-heigth;
     width: 47px;
     text-align: center;
     position: absolute;
-	top: 29px;
+	top: 26px;
 	right: 15px;
 	height: 38px;
 }
@@ -35,7 +35,7 @@ parent:heigth => même heigth enfant par line-heigth;
 .all{
 	position: absolute;
 	border-right: 1px solid gray;
-	top: 29px;
+	top: 26px;
 	left: 15px;
 	border-radius: 25px 0 0 25px;
 	border: 1px solid;
@@ -49,6 +49,8 @@ parent:heigth => même heigth enfant par line-heigth;
 
 .footer{
 	background-color: #e8e8e8;
+	width: 100%;
+	position: absolute;
 }
 
 p,h2,h3{

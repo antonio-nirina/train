@@ -13,7 +13,11 @@ const style ={
 
 const like = {
 	"fontSize":"20px",
-	'color':'#1890ff'
+	'color':'gray'
+}
+const list = {
+	"width":"50%",
+	"margin":"0 auto"
 }
 
 const Home = () => {
@@ -39,6 +43,7 @@ const { loading, user } = userRequest;
 	    <div style={style}>
 	    	<Header />
 	      <List
+	      	style={list}
 	        className="demo-loadmore-list"
 	        loading={loading}
 	        itemLayout="horizontal"

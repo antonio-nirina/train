@@ -86,6 +86,7 @@ func (process *Process) CreatePost(w http.ResponseWriter, r *http.Request) {
 	post.Content = html.EscapeString(strings.TrimSpace(postDto.Content))
 	post.Author = user
 	post.AuthorID = connected.ID
+	post.Like = 0
 	post.CreatedAt = time.Now()
 	post.UpdatedAt = time.Now()
 	post.Save(process.DB)

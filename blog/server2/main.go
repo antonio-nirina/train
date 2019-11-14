@@ -2,10 +2,10 @@ package main
 
 import (
 	//"errors"
-	"log"
 	"os"
 
 	"github.com/antonio-nirina/formation/blog/server2/process"
+	log "github.com/antonio-nirina/formation/blog/server2/flog"
 	"github.com/joho/godotenv"
 )
 
@@ -14,7 +14,8 @@ func main() {
 	err := godotenv.Load()
 
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.FatalOp("Error loading .env file",err)
+		// log.Fatal("Error loading .env file")
 	}
 
 	dbName := os.Getenv("DATABASE")
@@ -24,3 +25,5 @@ func main() {
 	a.Initialize(dbUser, dbPwd, host, dbName)
 	
 }
+
+

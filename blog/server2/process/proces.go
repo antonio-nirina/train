@@ -36,6 +36,7 @@ func (process *Process) Initialize(dbUser string, dbPassword string, dbHost stri
 	process.Router.HandleFunc("/register", process.CreateUser).Methods("POST")
 	process.Router.HandleFunc("/login", process.Signin).Methods("POST")
 	process.Router.HandleFunc("/api/create/post", auth.HelperTokenMiddleware(process.CreatePost)).Methods("POST")
+	process.Router.HandleFunc("/api/list/post", auth.HelperTokenMiddleware(process.AllPost)).Methods("GET")
 	fmt.Println("Run in 8080")
 	log.Fatal(http.ListenAndServe(":8080", process.Router))
 }

@@ -1,18 +1,21 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt-nodejs');
-const secret              = process.env.SECRET;
-const jwt                 = require('jsonwebtoken');
-const User = require('../model/user');
+const secret = process.env.SECRET;
+const jwt    = require('jsonwebtoken');
+const User   = require('../model/user');
 
 module.exports.isAuthorized  = function(req, res, next) {
-	console.log(req.headers)
-	if (req.headers.authorization == 'test') {
-		const resp = res.json({
-			"code":400,
-			"message":"test apps"
-		})
-		return next(resp);
-	}
+	// const decodedToken = Jwt.decode(token, {complete: true});
+  const token = req.headers.authorization
+  try {
+    const decoded = jwt.verify(token, secret);
+  } catch(err) {
+      const resp = res.json({
+        "code":400,
+        "message":"test apps"
+      })
+    return next(resp);
+  }
 	
 	next();
 }
@@ -31,7 +34,6 @@ exports.signup = function(req, res, next) {
   const password = req.body.password;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
-  const address = req.body.address;
   const phone = req.body.phone;
 
   if (!email || !password) {
@@ -56,8 +58,7 @@ exports.signup = function(req, res, next) {
       password: password,
       firstName: firstName,
       lastName: lastName,
-      phone:phone,
-      address:address
+      phone:phone
     });
 
     user.save(function(err) {  // callback function
@@ -66,7 +67,10 @@ exports.signup = function(req, res, next) {
       }
 
       // Respond user request indicating the user was created
-      res.json({ message: 'You have successfully signed up. You can sign in now.' });
+      res.json({ 
+        code:201,
+        message: 'You have successfully signed up. You can sign in now.' 
+      });
     });
   });
 };
@@ -89,6 +93,7 @@ exports.signin = function(req, res, next) {
 		if (err) {
 			return res.status(400).send({ message: 'This email not found.' });
 		}
+    console.log(resp)
 		const checkPwd = bcrypt.compareSync(req.body.password,resp.password);
 
 		if (checkPwd) {

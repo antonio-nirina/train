@@ -115,3 +115,11 @@ line-height: 23px;
 a{
 	color: #1890ff;
 }
+
+.init .footer {
+	bottom: 0;
+}
+
+.dec{
+	cursor: pointer;
+}

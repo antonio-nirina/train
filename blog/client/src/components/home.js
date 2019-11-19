@@ -1,10 +1,12 @@
 import React, { useState,useEffect } from 'react';
 // import {Link} from 'react-router-dom';
+import { Input } from 'antd';
 import 'antd/dist/antd.css';
 import { List, Avatar, Skeleton } from 'antd';
 import Header from './header';
 import Footer from './footer';
 
+const { TextArea } = Input;
 const style ={
   textAlign: 'center',
   height: 32,
@@ -15,33 +17,58 @@ const like = {
 	"fontSize":"20px",
 	'color':'gray'
 }
+const likes = {
+	"fontSize":"20px",
+	'color':'#1890ff'
+}
 const list = {
 	"width":"50%",
 	"margin":"0 auto"
 }
 
-const Home = () => {
+const Home = (props) => {
 const [userRequest, setUserRequest] = useState({
     loading: false,
     user: null,
+    isVisible: false
   });
 
   useEffect(() => {
     setUserRequest({ loading: true });
-    fetch('https://randomuser.me/api/?results=10')
+    // fetch('https://randomuser.me/api/?results=10')
+    fetch("/api/posts",{
+          method:'GET',
+          headers:{
+            'Content-Type':'application/json',
+            "Authorization":localStorage.getItem('token')
+          },
+        })
+
       .then(results => results.json())
-      .then(data => {
+      .then(object => {
         setUserRequest({
           loading: false,
-          user: data.results,
+          user: object.data,
         });
       });
   }, []);
 
-const { loading, user } = userRequest;
-  return (
+
+
+	const { loading, user,isVisible } = userRequest;
+  	return (
 	    <div style={style}>
 	    	<Header />
+	    	<div className="post" style={{"width":"50%","margin":"0 auto"}}>
+	    		<TextArea placeholder="exprimer vous" onKeyDown={onSend} rows={4} />
+	    		{isVisible ? 
+	    		(
+	    			<button className="btn btn-success" style={{"height": "38px","position": "relative","top": "3px","borderRadius":"50px"}}>
+						Publier
+					</button>
+	    		) : (null)}
+	    		
+	    	</div>
 	      <List
 	      	style={list}
 	        className="demo-loadmore-list"
@@ -53,7 +80,7 @@ const { loading, user } = userRequest;
 	            actions={[
 	            	<a style={{'color':'#1890ff'}} key="list-loadmore-more">
 	            	like
-	            	<p>0</p>
+	            	<p>{item.like}</p>
 	            	</a>,
 	            	<a style={{'color':'#1890ff'}} key="list-loadmore-edit">
 	            	edit
@@ -68,12 +95,14 @@ const { loading, user } = userRequest;
 	          <Skeleton avatar title={false} loading={item.loading} active>
 	              <List.Item.Meta
 	                avatar={
-	                  <Avatar src={item.picture.thumbnail} />
+	                  <Avatar src={require('../assets/image/user.png')} />
 	                }
-	                title={<a href="https://ant.design">{item.name.last}</a>}
-	                description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+	                title={<a href="https://ant.design">{item.authorName}</a>}
+	                description={contentH(item)}
 	              />
-	              <span style={like}><i className="fa fa-thumbs-up"></i></span>
+	              {item.like > 0 ? (<span style={likes}><i className="fa fa-thumbs-up"></i></span>)
+	              	: (<span style={like}><i className="fa fa-thumbs-up"></i></span>)
+	              }
 	            </Skeleton>
 	          </List.Item>
 	        )}
@@ -82,5 +111,29 @@ const { loading, user } = userRequest;
 	    </div>
   );
 }
+
+const contentH = (item) => {
+	let newList;
+	if((item.content).length > 50 ) {
+		let _arr = item.content.split(" ")
+		for (var i =_arr.length - 1; i >= 0; i--) {
+			_arr[i] = ""
+			const list = (_arr.filter(e => e).join(" "))
+
+			if (list.length <= 50) {
+				break;
+			}
+			newList = list +" ...."
+		}
+	} else {
+		newList = item.content;
+	}
+
+	return newList
+}
+
+  const onSend = (event) => {
+  	console.log(event.target.value)
+  }
 
 export default Home;

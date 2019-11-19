@@ -10,7 +10,7 @@ import {getUserConnected} from '../actions/logAction';
 class Login extends React.Component {
 	handleFormSubmit({email,password}){
     	const obj = {
-		    'username':email,
+		    'email':email,
 		    'password':password
 		  };
     	this.props.getUserConnected(obj, (path) => {
@@ -33,12 +33,12 @@ class Login extends React.Component {
 	render() {
 		const { handleSubmit} = this.props
 		return(
-			<div>					     					    	
+			<div className="init">					     					    	
 				<Header/>
 				{/*eslint-disable */}
 				<div className="content container">
 				    <div className="wrap connexion formulaire" style={{"width":"50%","margin":"0 auto"}}>
-					    <div className="bloc noborder">
+					    <div className="bloc noborder" style={{"textAlign":"center"}}>
 							<h1 className="text-center">Connexion</h1>
 							{this.props.status ? (
 								<div className="text-danger text-center" role="alert">
@@ -50,6 +50,7 @@ class Login extends React.Component {
 							<form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
 					          	<Field name="email" component={this.renderInput} type="text" label="" placeholder="Email" />
 					          	<Field name="password" component={this.renderInput} type="password" label="" placeholder="Mot de passe" />
+					          	<button type="submit" className="btn btn-primary" >Se connecter</button><br/>
 					          	<div className="text-center bottom">
 					          		<br/>
 					          		Vous n'avez pas encore un compte?

@@ -12,10 +12,11 @@ import (
 	_jwt "github.com/dgrijalva/jwt-go"
 )
 
-func CreateToken(user_email string) (string, error) {
+func CreateToken(user_email string,id interface{}) (string, error) {
 	claims := _jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["email"] = user_email
+	claims["id"] = id
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix() //Token expires after 1 hour
 	token := _jwt.NewWithClaims(_jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(os.Getenv("APP_SECRET")))
@@ -67,7 +68,6 @@ func GetUserCurrent(r *http.Request) (string, error) {
 
 	claims, ok := token.Claims.(_jwt.MapClaims)
 	if ok && token.Valid {
-		// fmt.Println(claims["email"])
 		email := fmt.Sprintf("%v", claims["email"])
 		return email, nil
 	}
@@ -82,5 +82,5 @@ func Pretty(data interface{}) {
 		return
 	}
 
-	fmt.Println(string(b))
+	fmt.Sprintf(string(b))
 }

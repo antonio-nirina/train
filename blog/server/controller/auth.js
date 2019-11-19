@@ -1,18 +1,20 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt-nodejs');
 const secret = process.env.SECRET;
+const fs     = require('fs');
 const jwt    = require('jsonwebtoken');
 const User   = require('../model/user');
-
+const privateKey = fs.readFileSync('config/private.key');
+const  publicKey = fs.readFileSync('config/public.pem'); 
 module.exports.isAuthorized  = function(req, res, next) {
 	// const decodedToken = Jwt.decode(token, {complete: true});
   const token = req.headers.authorization
   try {
-    const decoded = jwt.verify(token, secret);
+    const decoded = jwt.verify(token, publicKey);
   } catch(err) {
       const resp = res.json({
         "code":400,
-        "message":"test apps"
+        "message":"token invalid"
       })
     return next(resp);
   }
@@ -35,6 +37,7 @@ exports.signup = function(req, res, next) {
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const phone = req.body.phone;
+  const avatar = req.body.avatar;
 
   if (!email || !password) {
     return res.status(400).send({ message: 'You must provide both email and password.' }); 
@@ -42,7 +45,6 @@ exports.signup = function(req, res, next) {
 
   // See if a user with given email exists
   User.findOne({ email: email }, function(err, existingUser) {
-
     if (err) {
       return next(err);
     }
@@ -58,7 +60,8 @@ exports.signup = function(req, res, next) {
       password: password,
       firstName: firstName,
       lastName: lastName,
-      phone:phone
+      phone:phone,
+      avatar:avatar
     });
 
     user.save(function(err) {  // callback function
@@ -85,7 +88,7 @@ exports.signup = function(req, res, next) {
  * @param next
  */
 exports.signin = function(req, res, next) {
-	const email = req.body.username;
+	const email = req.body.email;
 	const payload = {    
     	email:email
     };
@@ -93,12 +96,12 @@ exports.signin = function(req, res, next) {
 		if (err) {
 			return res.status(400).send({ message: 'This email not found.' });
 		}
-    console.log(resp)
+    
 		const checkPwd = bcrypt.compareSync(req.body.password,resp.password);
 
 		if (checkPwd) {
-            jwt.sign(payload, secret, {expiresIn: 3600 }, (err, token) => {
-                //console.log(jwt.decode(token))
+            //jwt.sign(payload, secret, {expiresIn: 3600 }, (err, token) => {
+              jwt.sign(payload, privateKey, { algorithm: 'RS256' },(err, token) => {
                 res.json({
                     success : true,
                     code_status : 200,

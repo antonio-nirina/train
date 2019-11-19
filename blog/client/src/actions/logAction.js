@@ -2,7 +2,7 @@ import { AUTH,UN_AUTH} from './types';
 
 export function getUserConnected(obj,historyPush){
   return function(dispatch) {
-    fetch('/login_check',
+    fetch('/login',
         {
           method:'POST',
           headers:{
@@ -12,16 +12,16 @@ export function getUserConnected(obj,historyPush){
         }
       ).then((resp) => {
         return resp.json();
-      }).then((res) => {        
+      }).then((res) => {       
         dispatch({
             type: AUTH,
             res: res,
           });
-        if (res.code === 200) {
-          localStorage.setItem('token', res.token);
+        if (res.code_status === 200) {
+          localStorage.setItem('token', res.data);
           historyPush('/');
         } else {
-          historyPush('/login');
+          historyPush('/signin');
         }
       });
       
@@ -30,5 +30,6 @@ export function getUserConnected(obj,historyPush){
 
 export function signoutUser() {
   localStorage.removeItem('token');
+   window.location.reload(true)
   return { type: UN_AUTH };
 }

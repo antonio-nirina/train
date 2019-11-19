@@ -2,7 +2,7 @@ package model
 
 import (
 	"time"
-	"fmt"
+	// "fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -15,6 +15,7 @@ type Post struct {
 	Like      int       `gorm: json:"like"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
+	Comments []Comment `gorm:"ForeignKey:CommentID"`
 }
 
 func (Post *Post) TableName() string {
@@ -33,7 +34,7 @@ func (p *Post) FindAllPosts(db *gorm.DB) (*[]Post, error) {
 	if err != nil {
 		return &[]Post{}, err
 	}
-fmt.Println(posts)
+
 	if len(posts) > 0 {
 		for i, _ := range posts {
 			err := db.Debug().Model(&User{}).Where("id = ?", posts[i].AuthorID).Take(&posts[i].Author).Error
@@ -43,4 +44,19 @@ fmt.Println(posts)
 		}
 	}
 	return &posts, nil
+}
+
+func (p *Post) FindPostId(db *gorm.DB,id int64) (*Post, error) {
+	var err error
+	err = db.Debug().Model(&Post{}).Where("id = ?", id).Take(&p).Error
+	if err != nil {
+		return &Post{}, err
+	}
+	if p.ID != 0 {
+		err = db.Debug().Model(&User{}).Where("id = ?", p.AuthorID).Take(&p.Author).Error
+		if err != nil {
+			return &Post{}, err
+		}
+	}
+	return p, nil
 }

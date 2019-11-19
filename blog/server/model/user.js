@@ -7,7 +7,8 @@ const userSchema = new Schema({
   password: String,
   firstName: String,
   lastName: String,
-  phone: { type: String, default: '' }
+  phone: { type: String, default: '' },
+  avatar: String
 });
 // On Save Hook, encrypt the password
 userSchema.pre('save', function(next) {  // before saving the model, run this funtion

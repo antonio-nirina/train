@@ -71,7 +71,7 @@ class Init extends Component {
 
   render() {
     return (
-      <div>
+      <div className="init">
         <Header />
         <div className="main container">
           <div className="insert col-sm-6" style={{"margin": "0 auto"}}>
@@ -120,7 +120,7 @@ class Init extends Component {
             }  
           </div>
         </div>
-        <Footer />
+        <Footer/>
       </div>
     );
   }

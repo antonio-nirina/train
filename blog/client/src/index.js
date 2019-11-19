@@ -12,6 +12,9 @@ import Trip from './components/trip';
 import Init from './components/init';
 import Login from './components/login';
 import Signup from './components/signup';
+import {RequireAuth}from './components/requireAuth';
+import Profile from './components/profile';
+import Contact from './components/contact';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducer);
@@ -22,15 +25,22 @@ if (token) {
 	store.dispatch({type: AUTH});
 }
 
+
 ReactDOM.render(
 	<Provider store = {store}>
 	<Router>
 		<Switch>
-			<Route exact path="/" component={Home}/>
-			<Route  path="/blog" component={Trip}/>
+			<RequireAuth exact path="/" component={Home} />
+			{/*<RequireAuth 
+    			exact path="/" 
+    			render={(props) => <Home {...props} socket={socket}/>} 
+			/>*/}
+			<Route  path="/dashboard" component={Trip}/>
 			<Route  path="/init" component={Init}/>
-			<Route  path="/login" component={Login}/>
+			<Route  path="/signin" component={Login}/>
 			<Route  path="/signup" component={Signup}/>
+			<Route  path="/profile" component={Profile}/>
+			<Route  path="/contact" component={Contact}/>
 		</Switch>
 	</Router>
 	</Provider>

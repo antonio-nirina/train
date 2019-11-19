@@ -12,15 +12,15 @@ const jwt  = require('jsonwebtoken');
 exports.createPost = function(req, res, next) {
 	const title = req.body.title;
   	const content = req.body.content;
-  	const token = req.headers.token
+  	const token = req.headers.authorization
 	let decoded = jwt.decode(token, {complete: true});
-	console.log(decoded.payload)
+
 	User.findOne({email: decoded.payload.email }, function(err, resp) {
 	  	const post = new Post({
 	  		title: title,
-			content: content,  
+			  content: content,  
 		  	authorId: resp._id,
-		  	authorName: resp.name,
+		  	authorName: resp.lastName,
 		  	time: new Date(),
 		  	like:0
 	    });
@@ -31,7 +31,7 @@ exports.createPost = function(req, res, next) {
 	      }
 	      res.json({
 	       code:200,
-	       message: 'post create.' 
+	       message: 'post create with sucess.' 
 	   	});
     });
    });
@@ -60,6 +60,40 @@ exports.fetchPosts = function(req, res, next) {
           message: 'Error! Could not retrieve posts.'
         });
       }
-      res.json(posts);
+      res.json({
+         code:200,
+         message: 'sucess',
+         data: posts
+       });
     });
 }
+
+/**
+ * Fetch a single post by post ID
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+exports.fetchPost = function(req, res, next) {
+  Post.findById({
+    _id: req.params.id
+  }, function(err, post) {
+    if (err) {
+      console.log(err);
+      return res.status(422).json({
+        message: 'Error! Could not retrieve the post with the given post ID.'
+      });
+    }
+    if (!post) {
+      return res.status(404).json({
+        message: 'Error! The post with the given ID is not exist.'
+      });
+    }
+    res.json({
+         code:200,
+         message: 'sucess',
+         data: post
+       });
+  });
+};

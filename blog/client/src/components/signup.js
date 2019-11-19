@@ -13,7 +13,8 @@ class Signup extends React.Component {
     		'name':nom,
     		'phone':tel,
 		    'email':email,
-		    'password':password
+		    'password':password,
+		    'avatar':""
 		  };
 
     	this.props.register(obj, (path) => {
@@ -37,7 +38,7 @@ class Signup extends React.Component {
     render() {
 		const {handleSubmit} = this.props
 		return(
-			<div>
+			<div className="init">
 				<Header />
 				<div className="content container">
 				{/*eslint-disable */}
@@ -63,7 +64,7 @@ class Signup extends React.Component {
 									    Inscription
 									    </button><br/>
 		                                 Vous avez déjà un compte ?<br/>
-		                                 <Link to="/login">Connectez-vous !</Link><br/><br/>
+		                                 <Link to="/signin">Connectez-vous !</Link><br/><br/>
 								    </div>
 								</form>						
 					    </div>

@@ -1,5 +1,7 @@
 import React  from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {signoutUser} from '../actions/logAction';
 
 const debounce = (func, wait) => {
   let timeout
@@ -43,15 +45,39 @@ class Header extends React.Component {
 				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/" title="home">Acceuil</Link></span>
 				      </li>
 				      <li className="nav-item">
-				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/init" title="contact">Init</Link></span>
+				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/init" title="initial react">Init</Link></span>
 				      </li>
 				      <li className="nav-item">
-				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/blog" title="contact">Blog</Link></span>
+				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/dashboard" title="dashboard">Dashboard</Link></span>
 				      </li>
 				      <li className="nav-item">
 				        <span className="nav-link active"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/contact" title="contact">Contact</Link></span>
 				      </li>
-				      <button className="btn btn-success" style={{"height": "38px","position": "relative","top": "3px","borderRadius":"50px"}}><Link to="/login" style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem","color":"#ffff"}}>Se connecter</Link></button>
+				      {
+				      	this.props.isConnected ? 
+				      	(<li className="nav-item dropdown">
+					        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					          <img style={{"width":"36px"}} src={require('../assets/image/user.png')} />
+					        </a>
+					        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+					          <span className="dropdown-item" >
+					          	<Link to="/dashboard">Dashboard</Link>
+					          </span>
+					          <span className="dropdown-item" >
+					          	<Link to="/profile" >Profile</Link>
+					          </span>
+					          <span className="dropdown-item bt btBlue dec" onClick={this.props.signoutUser}>
+					          	Déconnexion
+					          </span>
+					        </div>
+				      </li>
+				      ) 
+				      	: 
+				      	(<button className="btn btn-success" style={{"height": "38px","position": "relative","top": "3px","borderRadius":"50px"}}>
+				      		<Link to="/signin" style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem","color":"#ffff"}}>Se connecter</Link>
+				      	</button>)
+				      }
+				      
 				    </ul>
 			  </div>
 			</nav>
@@ -59,5 +85,18 @@ class Header extends React.Component {
 	}
 }
 
+function mapStateToProps(state) {
+	let a_status = state.login.authenticated;
+	console.log(a_status)
+	let init = ''
 
-export default Header;
+	if (a_status) {
+		init = a_status ? true : ""
+	}
+
+	return {
+		isConnected: init ? true : false,
+	}
+}
+
+export default connect(mapStateToProps,{signoutUser})(Header);

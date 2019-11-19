@@ -8,6 +8,7 @@ const commentSchema = new Schema({
   authorName: String,
   postId: String,
   time: Date,
+  like:Number
 });
 
 // Create the model class

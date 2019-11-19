@@ -120,7 +120,7 @@ func (process *Process) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	user.Save(process.DB)
 
-	response.SuccessJSon(w, http.StatusOK, res.aRespCreated(201, "user created"))
+	response.SuccessJSon(w, http.StatusOK, ARespCreated(201, "user created"))
 }
 
 func (process *Process) Signin(w http.ResponseWriter, r *http.Request) {
@@ -151,7 +151,7 @@ func (process *Process) Signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := auth.CreateToken(check.Email)
+	token, err := auth.CreateToken(check.Email,user.ID)
 	if err != nil {
 		response.ErrorJson(w, http.StatusBadRequest, "error interne")
 		return
@@ -169,7 +169,8 @@ func (res *Resp) aResponse(code int, msg string, data string) *Resp {
 	return res
 }
 
-func (res *Resp) aRespCreated(code int, msg string) *Resp {
+func ARespCreated(code int, msg string) *Resp {
+	res := &Resp{}
 	res.Code = code
 	res.Message = msg
 

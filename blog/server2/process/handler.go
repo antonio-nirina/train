@@ -25,10 +25,12 @@ type PostDto struct {
 }
 
 type UserDto struct {
-	Name      string `json:"name"`
+	LastName      string `json:"lastName"`
+	FirstName      string `json:"firstName"`
 	Email     string `json:"email"`
 	Telephone string `json:"telephone"`
 	Password  string `json:"password"`
+	Avatar string `json:"avatar"`
 }
 
 type CheckPwd struct {
@@ -75,9 +77,11 @@ func (process *Process) CreatePost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user.ID = connected.ID
-	user.Name = connected.Name
+	user.LastName = connected.LastName
+	user.FirstName = connected.FirstName
 	user.Email = connected.Email
 	user.Phone = connected.Phone
+	user.Avatar = connected.Avatar
 	user.Password = connected.Password
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
@@ -105,14 +109,16 @@ func (process *Process) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	hashPwd := user.CreateHash(usertDto.Password)
-	user.Name = usertDto.Name
+	user.LastName = usertDto.LastName
+	user.FirstName = usertDto.FirstName
 	user.Email = html.EscapeString(strings.TrimSpace(usertDto.Email))
 	user.Phone = html.EscapeString(strings.TrimSpace(usertDto.Telephone))
 	user.Password = hashPwd
+	user.Avatar = usertDto.Avatar
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	errValid := user.Validate()
+	errValid := user.Validate(process.DB,usertDto.Email)
 
 	if errValid != "" {
 		response.ErrorJson(w, http.StatusBadRequest, errValid)

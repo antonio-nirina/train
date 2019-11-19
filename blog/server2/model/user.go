@@ -7,6 +7,7 @@ import (
 	"crypto/sha512"
 	// "fmt"
 
+	log "github.com/antonio-nirina/formation/blog/server2/flog"
 	"github.com/badoux/checkmail"
 	"github.com/jinzhu/gorm"
 	"golang.org/x/crypto/bcrypt"
@@ -14,21 +15,33 @@ import (
 
 type User struct {
 	ID        int       `gorm:"primary_key;auto_increment" json:"id"`
-	Name      string    `gorm:"size:255;" json:"name"`
+	LastName      string    `gorm:"size:255;" json:"lastname"`
+	FirstName 	string    `gorm:"size:255;" json:"firstName"`
 	Email     string    `gorm:"size:100;not null;unique" json:"email"`
 	Phone     string    `gorm:"size:255;" json:"phone"`
 	Password  string    `gorm:"size:100;not null;" json:"password"`
+	Avatar    string    `gorm:"size:255;" json:"avatar"`
 	CreatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"created_at"`
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-func (u *User) Validate() string {
+func (u *User) Validate(db *gorm.DB,email string) string {
+	var err error
 	if u.Email == "" || u.Password == "" {
 		return "Email and Password not blank"
 	}
 
 	if err := checkmail.ValidateFormat(u.Email); err != nil {
 		return "Invalid Email"
+	}
+
+	err = db.Debug().Model(User{}).Where("email = ?", email).Take(&u).Error
+	if err != nil {
+		log.ErrorOp("error_get_user_validate",err)
+		return "error_interne"
+	}
+	if !gorm.IsRecordNotFoundError(err) {
+		return "email has used"
 	}
 
 	return ""
@@ -97,6 +110,18 @@ func (u *User) DeleteAUser(db *gorm.DB, uid uint32) (int64, error) {
 func (u *User) UserConneted(db *gorm.DB, email string)(*User, error) {
 	var err error
 	err = db.Debug().Model(User{}).Where("email = ?", email).Take(&u).Error
+	if err != nil {
+		return &User{}, err
+	}
+	if gorm.IsRecordNotFoundError(err) {
+		return &User{}, errors.New("User Not Found")
+	}
+	return u, err
+}
+
+func (u *User) FindUserId(db *gorm.DB, id int)(*User, error) {
+	var err error
+	err = db.Debug().Model(User{}).Where("id = ?", id).Take(&u).Error
 	if err != nil {
 		return &User{}, err
 	}

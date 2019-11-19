@@ -43,8 +43,18 @@ type OutPost struct {
 	ID interface{} `json:"id"`
 	Title string `json:"title"`
 	Content string `json:"content"`
-	Name string `json:"name"`
+	FirstName string `json:"firstName"`
+	LastName string `json:"lastName"`
 	Like int `json:"like"`
+}
+
+type OutUser struct {
+	ID interface{} `json:"id"`
+	LastName string `json:"lastName"`
+	FirstName string `json:"firstName"`
+	Email string `json:"email"`
+	Phone string `json:"phone"`
+	Avatar string `json:"avatar"`
 }
 
 var arrResp = arResp{}
@@ -52,6 +62,7 @@ var post = model.Post{}
 var comDto = CommentDto{}
 var out = OutPost{}
 var object = objResp{}
+var user = model.User{}
 // var resp = Resp{}
 func (process *Process) AllPost(w http.ResponseWriter, r *http.Request) {
 	var array []interface{}// map[string]interface{}
@@ -68,7 +79,8 @@ func (process *Process) AllPost(w http.ResponseWriter, r *http.Request) {
 		out.Title = val.Title
 		out.Content = val.Content
 		out.Like = val.Like
-		out.Name = val.Author.Name
+		out.LastName = val.Author.LastName
+		out.FirstName = val.Author.FirstName
 		array = append(array,out)
 	}
 
@@ -97,12 +109,12 @@ func (process *Process) FetchPost(w http.ResponseWriter, r *http.Request) {
 	out.Title = _post.Title
 	out.Content = _post.Content
 	out.Like = _post.Like
-	out.Name = _post.Author.Name
+	out.FirstName = _post.Author.FirstName
+	out.LastName = _post.Author.LastName
 	response.SuccessJSon(w, http.StatusOK,object.objectResponse(200,"sucess",out))
 }
 
 func (process *Process) CreateComment(w http.ResponseWriter, r *http.Request) {
-	user := model.User{}
 	comment := model.Comment{}
 	err := json.NewDecoder(r.Body).Decode(&comDto)
 
@@ -133,9 +145,11 @@ func (process *Process) CreateComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user.ID = connected.ID
-	user.Name = connected.Name
+	user.LastName = connected.LastName
+	user.FirstName = connected.FirstName
 	user.Email = connected.Email
 	user.Phone = connected.Phone
+	user.Avatar = connected.Avatar
 	user.Password = connected.Password
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
@@ -186,8 +200,9 @@ func (process *Process) UpdateComment(w http.ResponseWriter, r *http.Request) {
 }
 
 func (process *Process) FetchProfile(w http.ResponseWriter, r *http.Request) {
+	outUser := OutUser{}
 	id := mux.Vars(r)
-	_id, err := strconv.ParseInt(id["id"], 10, 64)
+	_id, err := strconv.Atoi(id["id"])
 
 	if err != nil {
 		log.ErrorOp("get_id_post",err)
@@ -195,15 +210,24 @@ func (process *Process) FetchProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_user, err := post.FindPostId(process.DB,_id)
+	_user, err := user.FindUserId(process.DB,_id)
 
 	if err != nil {
 		log.ErrorOp("get_one_profil",err)
 		response.ErrorJson(w, http.StatusInternalServerError, "error interne")
 		return
 	}
+	outUser.ID = _user.ID
+	outUser.FirstName = _user.FirstName
+	outUser.LastName = _user.LastName
+	outUser.Email = _user.Email
+	outUser.Phone = _user.Phone
+	outUser.Avatar = _user.Avatar 
 
 	fmt.Println(_user)
+
+	response.SuccessJSon(w, http.StatusOK,object.objectResponse(200,"sucess",outUser))
+
 }
 
 func (process *Process) LikeHandler (w http.ResponseWriter, r *http.Request) {

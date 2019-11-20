@@ -53,8 +53,6 @@ const [userRequest, setUserRequest] = useState({
       });
   }, []);
 
-
-
 	const { loading, user,isVisible } = userRequest;
   	return (
 	    <div style={style}>

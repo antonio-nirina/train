@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from 'react';
 // import {Link} from 'react-router-dom';
+import Popup from 'reactjs-popup';
 import { Input } from 'antd';
+
 import 'antd/dist/antd.css';
 import { List, Avatar, Skeleton } from 'antd';
 import Header from './header';
@@ -30,7 +32,7 @@ const Home = (props) => {
 const [userRequest, setUserRequest] = useState({
     loading: false,
     user: null,
-    isVisible: false
+    open: false
   });
 
   useEffect(() => {
@@ -53,21 +55,32 @@ const [userRequest, setUserRequest] = useState({
       });
   }, []);
 
+  	const onSend = (event) => {
+  		setUserRequest({ open: true });
+  	}
 
+  	const closeModal = () => {
+  		setUserRequest({ open: false });
+  	}
 
-	const { loading, user,isVisible } = userRequest;
+	const { loading, user,open } = userRequest;
   	return (
 	    <div style={style}>
 	    	<Header />
+	    	<Popup
+	          	open={open}
+	          	closeOnDocumentClick
+	          	onClose={closeModal}
+	        >
+	        <div className="">
+	        	<TextArea placeholder="exprimer vous" rows={4} />
+	        	<button className="btn btn-success" style={{"height": "38px","position": "relative","top": "3px","borderRadius":"50px"}}>
+						Publier
+				</button>
+	        </div>
+	        </Popup>
 	    	<div className="post" style={{"width":"50%","margin":"0 auto"}}>
 	    		<TextArea placeholder="exprimer vous" onKeyDown={onSend} rows={4} />
-	    		{isVisible ? 
-	    		(
-	    			<button className="btn btn-success" style={{"height": "38px","position": "relative","top": "3px","borderRadius":"50px"}}>
-						Publier
-					</button>
-	    		) : (null)}
-	    		
 	    	</div>
 	      <List
 	      	style={list}
@@ -132,8 +145,8 @@ const contentH = (item) => {
 	return newList
 }
 
-  const onSend = (event) => {
+  /*const onSend = (event) => {
   	console.log(event.target.value)
-  }
+  }*/
 
 export default Home;

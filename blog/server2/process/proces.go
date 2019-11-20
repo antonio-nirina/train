@@ -42,7 +42,7 @@ func (process *Process) Initialize(dbUser string, dbPassword string, dbHost stri
 
 	process.Router.HandleFunc("/api/create/comment", auth.HelperTokenMiddleware(process.CreateComment)).Methods("POST")
 	process.Router.HandleFunc("/api/comment/{id}", auth.HelperTokenMiddleware(process.UpdateComment)).Methods("GET")
-	process.Router.HandleFunc("/api/profil", auth.HelperTokenMiddleware(process.FetchProfile)).Methods("GET")
+	process.Router.HandleFunc("/api/profile/{id}", auth.HelperTokenMiddleware(process.FetchProfile)).Methods("GET")
 	process.Router.HandleFunc("/api/like", auth.HelperTokenMiddleware(process.LikeHandler)).Methods("POST")
 	fmt.Println("Run in 8080")
 	log.Fatal(http.ListenAndServe(":8080", process.Router))

@@ -214,7 +214,7 @@ func (process *Process) FetchProfile(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.ErrorOp("get_one_profil",err)
-		response.ErrorJson(w, http.StatusInternalServerError, "error interne")
+		response.ErrorJson(w, http.StatusInternalServerError, "user not found")
 		return
 	}
 	outUser.ID = _user.ID

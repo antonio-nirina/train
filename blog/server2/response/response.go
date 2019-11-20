@@ -18,8 +18,8 @@ func SuccessJSon(w http.ResponseWriter, status int, payload interface{}) {
 	w.Write([]byte(response))
 }
 
-func ErrorJson(w http.ResponseWriter, code int, message string) {
-	msg := map[string]string{"error": message}
+func ErrorJson(w http.ResponseWriter, code int, message interface{}) {
+	msg := map[string]interface{}{"code":400,"message": message}
 	response, err := json.Marshal(msg)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

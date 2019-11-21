@@ -1,4 +1,5 @@
 import {REGISTER,POSTLIST,POST_CREATE,ADD_LIKE,FETCH_PROFILE} from './types';
+// import axios from 'axios';
 
 export function register(data,historyPush){
   return function(dispatch) {
@@ -30,7 +31,7 @@ export function register(data,historyPush){
 export function listPost(){
   return function(dispatch) {
     fetch("/api/posts",{
-      method:'POST',
+      method:'GET',
       headers:{
         'Content-Type':'application/json',
         "Authorization":localStorage.getItem('token')

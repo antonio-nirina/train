@@ -11,8 +11,8 @@ const jwt  = require('jsonwebtoken');
  */
 exports.createPost = function(req, res, next) {
 	const title = req.body.title;
-  	const content = req.body.content;
-  	const token = req.headers.authorization
+  const content = req.body.content;
+  const token = req.headers.authorization
 	let decoded = jwt.decode(token, {complete: true});
 
 	User.findOne({email: decoded.payload.email }, function(err, resp) {
@@ -31,7 +31,7 @@ exports.createPost = function(req, res, next) {
 	      }
 	      res.json({
 	       code:200,
-	       message: 'post create with sucess.' 
+	       message: 'post create with sucess.'
 	   	});
     });
    });

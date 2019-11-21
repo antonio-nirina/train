@@ -63,7 +63,15 @@ class Home extends React.Component {
   	}
 
   	sendPost(){
-  		console.log("send", this.state.post)
+  		// console.log("send", this.state.post)
+  		const obj = {
+  			"title":"",
+  			"content":this.state.post
+  		}
+  		this.props.createPost(obj)
+  		setTimeout(() => {
+			this.setState({open: false })
+		}, 2000)
   	}
 
   	sendLike(){

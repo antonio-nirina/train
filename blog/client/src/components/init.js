@@ -20,6 +20,7 @@ class Init extends Component {
   }
 
   onDeleted(el,i){
+    {/*eslint-disable */}
     this.state.list.map((e,index) => {
       if(i === index){
           return e.data = '';
@@ -73,6 +74,7 @@ class Init extends Component {
     return (
       <div className="init">
         <Header />
+        {/*eslint-disable */}
         <div className="main container">
           <div className="insert col-sm-6" style={{"margin": "0 auto"}}>
             <div className="title" style={{"textAlign":"center","margin": "5px 0px","position": "relative"}}>

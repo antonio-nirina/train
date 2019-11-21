@@ -1,4 +1,5 @@
-import React, { useState,useEffect } from 'react';
+import React from 'react';
+import {connect} from 'react-redux';
 // import {Link} from 'react-router-dom';
 import Popup from 'reactjs-popup';
 import { Input } from 'antd';
@@ -7,6 +8,7 @@ import 'antd/dist/antd.css';
 import { List, Avatar, Skeleton } from 'antd';
 import Header from './header';
 import Footer from './footer';
+import {listPost,createPost} from "../actions/userAction"
 
 const { TextArea } = Input;
 const style ={
@@ -29,32 +31,23 @@ const list = {
 }
 
 class Home extends React.Component {
-	constructor() {
-    	super();
+
+	constructor(props) {
+    	super(props);
     	this.state = {
 	    	loading: false,
-	    	user: null,
 	    	open: false,
+	    	post:''
     	}
     	this.onSend = this.onSend.bind(this)
     	this.closeModal = this.closeModal(this)
+    	this.handleChange = this.handleChange.bind(this)
+    	this.sendPost = this.sendPost.bind(this)
+    	this.sendLike = this.sendLike.bind(this)
     }
 
     componentDidMount() {
-    	fetch("/api/posts",{
-          method:'GET',
-          headers:{
-            'Content-Type':'application/json',
-            "Authorization":localStorage.getItem('token')
-          },
-        }).then(results => {return results.json()})
-        .then(object => {
-        	if (object) {
-        		this.setState({loading: false,user: object.data})	
-        	}
-          	
-        })
-
+    	this.props.listPost()
     }
 
     onSend = (event) => {
@@ -65,8 +58,19 @@ class Home extends React.Component {
   		this.setState({ open: false });
   	}
 
+  	handleChange(event){
+  		this.setState({post:event.target.value})
+  	}
+
+  	sendPost(){
+  		console.log("send", this.state.post)
+  	}
+
+  	sendLike(){
+  		console.log("like", "id")
+  	}
+
   	contentH = (item) => {
-  		console.log(item)
 		let newList;
 		if((item.content).length > 50 ) {
 			let _arr = item.content.split(" ")
@@ -87,64 +91,65 @@ class Home extends React.Component {
 	}
 
   	render() {
-  		const { loading, user,open } = this.state;
+  		// const { loading,open } = this.state;
   		return (
   			<div style={style}>
+  				{/*eslint-disable */}
   				<Header />
 	  			<Popup
-		          	open={this.open}
+		          	open={this.state.open}
 		          	closeOnDocumentClick
 		          	onClose={this.closeModal}
 		        >
 		        <div className="">
-		        	<TextArea placeholder="exprimer vous" rows={4} />
-		        	<button className="btn btn-success" style={{"height": "38px","position": "relative","top": "3px","borderRadius":"50px"}}>
+		        	<TextArea placeholder="exprimer vous" rows={4} onChange={this.handleChange} />
+		        	<button className="btn btn-success" onClick={this.sendPost}>
 							Publier
 					</button>
 		        </div>
 		        </Popup>
 		    	<div className="post" style={{"width":"50%","margin":"0 auto"}}>
-		    		<TextArea placeholder="exprimer vous" onKeyDown={this.onSend} rows={4} />
+		    		<button className="btn btn-success" onClick={this.onSend}>
+						Creér un post
+					</button>
 		    	</div>
-		    	<List
-			      	style={list}
-			        className="demo-loadmore-list"
-			        loading={loading}
-			        itemLayout="horizontal"
-			        dataSource={user ? user:""}
-			        renderItem={ item => (
-			          <List.Item
-			            actions={[
-			            	<a style={{'color':'#1890ff'}} key="list-loadmore-more">
-			            	like
-			            	<p>{item.like}</p>
-			            	</a>,
-			            	<a style={{'color':'#1890ff'}} key="list-loadmore-edit">
-			            	edit
-			            	<p>&nbsp;</p>
-			            	</a>,
-			            	 <a style={{'color':'#1890ff'}} key="list-loadmore-more">
-			            	 comment
-			            	 <p>&nbsp;</p>
-			            	 </a>
-			           	]}
-			          >
-			          	<Skeleton avatar title={false} loading={item.loading} active>
-			          		<div className="" style={{"position": "relative","left": "82px","top": "-11px"}}>{item.authorName}</div>
-			              <List.Item.Meta
-			                avatar={
-			                  <Avatar src={require('../assets/image/user.png')} />
-			                }
-			                title={<a href="https://ant.design">{item.title}</a>}
-			                description={() => this.contentH(item)}
-			              />
-			              {item.like > 0 ? (<span style={likes}><i className="fa fa-thumbs-up"></i></span>)
-			              	: (<span style={like}><i className="fa fa-thumbs-up"></i></span>)
-			              }
-			            </Skeleton>
-			          </List.Item>
-			        )}
-	        	/>
+		       		<List
+				        className="demo-loadmore-list"
+				        style={list}
+				        loading={this.state.loading }
+				        itemLayout="horizontal"
+				        dataSource={this.props.init}
+				        renderItem={item => (
+				          <List.Item
+				            actions={[
+				            	<a style={{'color':'#1890ff'}} key="list-loadmore-more">
+				            	like
+				            	<p>{item.like}</p>
+				            	</a>,
+				            	<a style={{'color':'#1890ff'}} key="list-loadmore-edit">
+				            	edit
+				            	<p>&nbsp;</p>
+				            	</a>,
+				            	 <a style={{'color':'#1890ff'}} key="list-loadmore-more">
+				            	 comment
+				            	 <p>&nbsp;</p>
+				            	 </a>
+			           		]}
+				          >
+				            <Skeleton avatar title={false} loading={item.loading} active>
+				            	<div className="" style={{"position": "relative","left": "82px","top": "-11px"}}>{item.authorName}</div>
+				              <List.Item.Meta
+				                avatar={
+				                  <Avatar src={require('../assets/image/user.png')} />
+				                }
+				                title={<a href="https://ant.design">{item.title}</a>}
+				                description={this.contentH(item)}
+				              />
+			              		<span style={item.like > 0 ? likes :like } onClick={this.sendLike}><i className="fa fa-thumbs-up"></i></span>
+				            </Skeleton>
+				          </List.Item>
+				        )}
+			      	/>
 	        <Footer />
   			</div>
   		)
@@ -152,8 +157,24 @@ class Home extends React.Component {
 
 }
 
+function mapStateToProps(state, ownProps) {
+	let posts = state.user.listPost;
+
+	let _st = '';
+	let list = '';
+
+	if (posts) {
+		_st = posts.code !== 200 ? posts.message : '';
+		list = posts.data
+	}
+
+	return {
+		params: ownProps,
+		init:list 
+	}
+}
+
   /*const onSend = (event) => {
   	console.log(event.target.value)
   }*/
-
-export default Home;
+export default connect(mapStateToProps,{listPost,createPost})(Home);

@@ -9,6 +9,7 @@ const styles = {
 const Footer = () => {
 	return (
 		<div className="footer" style={styles}>
+		{/*eslint-disable */}
 			<div className="top">
 				<span style={{"paddingRight":"13px"}}>Retrouvez-nous sur</span>
 		        <a href="#" title="twitter" target="_blank" className="tw" rel="noopener noreferrer" style={{"margin": "0 5px"}}>

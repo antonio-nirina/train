@@ -1,4 +1,4 @@
-import {REGISTER} from './types';
+import {REGISTER,POSTLIST,POST_CREATE,ADD_LIKE,FETCH_PROFILE} from './types';
 
 export function register(data,historyPush){
   return function(dispatch) {
@@ -23,6 +23,88 @@ export function register(data,historyPush){
           historyPush('/signup');
         }
       });
+       
+    }
+}
+
+export function listPost(){
+  return function(dispatch) {
+    fetch("/api/posts",{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        "Authorization":localStorage.getItem('token')
+      },
+    }).then((resp) => {
+        return resp.json();
+    }).then((res) => {       
+      dispatch({
+        type: POSTLIST,
+        res: res,
+      });   
+    });
+       
+    }
+}
+
+export function createPost(obj){
+  return function(dispatch) {
+    fetch("/api/create/post",{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        "Authorization":localStorage.getItem('token')
+      },
+      body:JSON.stringify(obj)
+    }).then((resp) => {
+        return resp.json();
+    }).then((res) => {       
+      dispatch({
+        type: POST_CREATE,
+        res: res,
+      });   
+    });
+       
+    }
+}
+
+export function likeHandler(obj){
+  return function(dispatch) {
+    fetch("/api/like",{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        "Authorization":localStorage.getItem('token')
+      },
+      body:JSON.stringify(obj)
+    }).then((resp) => {
+        return resp.json();
+    }).then((res) => {       
+      dispatch({
+        type: ADD_LIKE,
+        res: res,
+      });   
+    });
+       
+    }
+}
+
+export function profileHandler(){
+  return function(dispatch) {
+    fetch("/api/profile",{
+      method:'GET',
+      headers:{
+        'Content-Type':'application/json',
+        "Authorization":localStorage.getItem('token')
+      }
+    }).then((resp) => {
+        return resp.json();
+    }).then((res) => {       
+      dispatch({
+        type: FETCH_PROFILE,
+        res: res,
+      });   
+    });
        
     }
 }

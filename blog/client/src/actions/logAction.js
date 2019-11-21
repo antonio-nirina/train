@@ -12,7 +12,8 @@ export function getUserConnected(obj,historyPush){
         }
       ).then((resp) => {
         return resp.json();
-      }).then((res) => {       
+      }).then((res) => {  
+      console.log(res)     
         dispatch({
             type: AUTH,
             res: res,

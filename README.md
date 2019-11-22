@@ -32,6 +32,5 @@ https://stackblitz.com/edit/react-wpbpxy
 https://github.com/codingfriend1/Feathers-Vue
 #### Blog:
 
-https://stackblitz.com/edit/react-vihtoh?file=Hello.js
-
+https://github.com/jaceklaskowski/scalania
 

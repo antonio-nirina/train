@@ -38,7 +38,7 @@ export function listPost(){
       },
     }).then((resp) => {
         return resp.json();
-    }).then((res) => {       
+    }).then((res) => {     
       dispatch({
         type: POSTLIST,
         res: res,

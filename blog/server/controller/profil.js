@@ -14,10 +14,20 @@ exports.fetchProfile = function(req, res, next) {
 	const token = req.headers.authorization
 	let decoded = jwt.decode(token, {complete: true});
 	User.findOne({email: decoded.payload.email }, function(err, resp) {
-		res.send({
-			code: 200,
-	    	data: resp
-	  	});
+		Post.find({authorId:resp._id},function(err,post) {
+			const obj = {
+				id:resp._id,
+				email:resp.email,
+				avatar:resp.avatar ? resp.avatar : "",
+				firstName:resp.firstName,
+				lastName:resp.lastName,
+				post:post
+			}
+			res.send({
+				code: 200,
+	    		data: obj
+	  		});
+		})
 	})
 }
 

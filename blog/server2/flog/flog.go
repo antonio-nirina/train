@@ -19,11 +19,13 @@ func Info(op string, args ...interface{}) {
 // ErrorOp logs an error for given
 // logical operation.
 func ErrorOp(op string, err error) {
-  if fileExists(info) {
-    mkdirForFile(info)
+  path  := fmt.Sprintf("%s%s", filepath.Dir(""), "/var/") 
+
+  if !fileExists(path) {
+    mkdirForFile(path)  
   }
 
-  f, err := os.OpenFile("info/info.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+  f, err := os.OpenFile("var/info.log", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
   if err != nil {
     fmt.Printf("error opening file: %v", err)
   }

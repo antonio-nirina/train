@@ -88,7 +88,6 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
 	let a_status = state.login.authenticated;
-	console.log(a_status)
 	let init = ''
 
 	if (a_status) {

@@ -8,7 +8,8 @@ import 'antd/dist/antd.css';
 import { List, Avatar, Skeleton } from 'antd';
 import Header from './header';
 import Footer from './footer';
-import {listPost,createPost} from "../actions/userAction"
+import {listPost,createPost} from "../actions/userAction";
+import Tools from "../utils/tools";
 
 const { TextArea } = Input;
 const style ={
@@ -37,7 +38,8 @@ class Home extends React.Component {
     	this.state = {
 	    	loading: false,
 	    	open: false,
-	    	post:''
+	    	post:'',
+	    	isBlue:false
     	}
     	this.onSend = this.onSend.bind(this)
     	this.closeModal = this.closeModal(this)
@@ -74,8 +76,16 @@ class Home extends React.Component {
 		}, 2000)
   	}
 
-  	sendLike(){
-  		console.log("like", "id")
+  	sendLike(item){
+  		let array = []
+  		array.push(item._id)
+  		this.setState({isBlue:true})
+  		const typeEvent = {
+  			"type": "like",
+  			"id":item._id
+  		}
+
+  		Tools.onSendSocket(typeEvent)
   	}
 
   	contentH = (item) => {
@@ -153,7 +163,7 @@ class Home extends React.Component {
 				                title={<a href="https://ant.design">{item.title}</a>}
 				                description={this.contentH(item)}
 				              />
-			              		<span style={item.like > 0 ? likes :like } onClick={this.sendLike}><i className="fa fa-thumbs-up"></i></span>
+			              		<span className="dec" style={item.like > 0 ? likes :like } onClick={() => {this.sendLike(item)}}><i className="fa fa-thumbs-up"></i></span>
 				            </Skeleton>
 				          </List.Item>
 				        )}

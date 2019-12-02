@@ -3,128 +3,59 @@ import {connect} from 'react-redux';
 
 import Header from './header';
 import Footer from './footer';
-import {profileHandler} from "../actions/userAction"
+import {profileHandler,updateAvatar} from "../actions/userAction"
 
 const ListPost = ({data}) => {
+	let array = []
+	if (data && data.length >= 5) {
+		data.map((el,i) => {
+			if (i <= 5) {
+				array.push(el)
+			}
+		})
+	} else  {
+		array = data ? data : []
+	}
 	return (
-		<div>
-			{data && data.length >= 5 ? 
-			(
-				<div>
-					<div className="row">
-						<div className="col-12 col-sm-6 box">
-							<p>{((new Date(data[0].time)).getDate())+"/"+((new Date(data[0].time)).getMonth()+1)+"/"+((new Date(data[0].time)).getFullYear())}</p>
-							<p>{data[0].content}</p>
+		<div className="row">
+			{array.length > 0 ? 
+				(array.map((el,i) => {
+					return(
+						<div className="col-12 col-sm-6 box" key={el._id}>
+								<p>{"Commentaire "+((new Date(el.time)).getDate())+"/"+((new Date(el.time)).getMonth()+1)+"/"+((new Date(el.time)).getFullYear())}</p>
+								<p>{el.content}</p>
 						</div>
-						<div className="col-12 col-sm-6 box">
-							<p>{((new Date(data[1].time)).getDate())+"/"+((new Date(data[1].time)).getMonth()+1)+"/"+((new Date(data[1].time)).getFullYear())}</p>
-							<p>{data[1].content}</p>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 col-sm-6 box">
-							<p>{((new Date(data[2].time)).getDate())+"/"+((new Date(data[2].time)).getMonth()+1)+"/"+((new Date(data[2].time)).getFullYear())}</p>
-							<p>{data[2].content}</p>
-						</div>
-						<div className="col-12 col-sm-6 box">
-							<p>{((new Date(data[3].time)).getDate())+"/"+((new Date(data[3].time)).getMonth()+1)+"/"+((new Date(data[3].time)).getFullYear())}</p>
-							<p>{data[3].content}</p>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-12 col-sm-6 box">
-							<p>{((new Date(data[4].time)).getDate())+"/"+((new Date(data[4].time)).getMonth()+1)+"/"+((new Date(data[4].time)).getFullYear())}</p>
-							<p>{data[4].content}</p>
-						</div>
-						<div className="col-12 col-sm-6 box">
-							<p>{((new Date(data[5].time)).getDate())+"/"+((new Date(data[5].time)).getMonth()+1)+"/"+((new Date(data[5].time)).getFullYear())}</p>
-							<p>{data[5].content}</p>
-						</div>
-					</div>
-				</div>
-			) : (
-				<div>
-					{data && data.length === 4 ? (
-						<div>
-							<div className="row">
-								<div className="col-12 col-sm-6 box">
-									<p>{((new Date(data[0].time)).getDate())+"/"+((new Date(data[0].time)).getMonth()+1)+"/"+((new Date(data[0].time)).getFullYear())}</p>
-									<p>{this.props.init.post[0].content}</p>
-								</div>
-								<div className="col-12 col-sm-6">
-									<p>{((new Date(data[1].time)).getDate())+"/"+((new Date(data[1].time)).getMonth()+1)+"/"+((new Date(data[1].time)).getFullYear())}</p>
-									<p>{data[1].content}</p>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-12 col-sm-6 box">
-									<p>{((new Date(data[2].time)).getDate())+"/"+((new Date(data[2].time)).getMonth()+1)+"/"+((new Date(data[2].time)).getFullYear())}</p>
-									<p>{data[2].content}</p>
-								</div>
-								<div className="col-12 col-sm-6 box">
-									<p>{((new Date(data[3].time)).getDate())+"/"+((new Date(data[3].time)).getMonth()+1)+"/"+((new Date(data[3].time)).getFullYear())}</p>
-									<p>{data[3].content}</p>
-								</div>
-							</div>
-					</div>
-					) : (
-					<div>{data && data.length === 3 ? (
-						<div>
-							<div className="row">
-								<div className="col-12 col-sm-6 box">
-									<p>{((new Date(data[0].time)).getDate())+"/"+((new Date(data[0].time)).getMonth()+1)+"/"+((new Date(data[0].time)).getFullYear())}</p>
-									<p>{data[0].content}</p>
-								</div>
-								<div className="col-12 col-sm-6 box">
-									<p>{((new Date(data[1].time)).getDate())+"/"+((new Date(data[1].time)).getMonth()+1)+"/"+((new Date(data[1].time)).getFullYear())}</p>
-									<p>{data[1].content}</p>
-								</div>
-							</div>
-							<div className="row">
-								<div className="col-12 col-sm-6 box">
-									<p>{((new Date(data[2].time)).getDate())+"/"+((new Date(data[2].time)).getMonth()+1)+"/"+((new Date(data[2].time)).getFullYear())}</p>
-									<p>{data[2].content}</p>
-								</div>
-							</div>
-						</div>
-						) : (
-						<div>{data && data.length === 2 ? (
-								<div>
-									<div className="row">
-										<div className="col-12 col-sm-6 box">
-											<p>{((new Date(data[0].time)).getDate())+"/"+((new Date(data[0].time)).getMonth()+1)+"/"+((new Date(data[0].time)).getFullYear())}</p>
-											<p>{data[0].content}</p>
-										</div>
-										<div className="col-12 col-sm-6 box">
-											<p>{((new Date(data[1].time)).getDate())+"/"+((new Date(data[1].time)).getMonth()+1)+"/"+((new Date(data[1].time)).getFullYear())}</p>
-											<p>{data[1].content}</p>
-										</div>
-									</div>
-								</div>
-							) : (
-							<div>
-								<div className="row">
-									<div className="col-12 col-sm-6 box">
-										<p>{data ? ((new Date(data[0].time)).getDate())+"/"+((new Date(data[0].time)).getMonth()+1)+"/"+((new Date(data[0].time)).getFullYear()) : null}</p>
-										<p>{data ? data[0].content : null}</p>
-									</div>
-								</div>
-						</div>
-						)}
-					</div>
-					)}
-				</div>
-				)}
-			</div>
-			) 
-		}
+					)
+				})) : 
+				(null) 
+			}
 		</div>
 	)
 }
 
 class Profile extends React.Component {
+	constructor(props) {
+	  super(props);
+	   	this.state ={
+      		file:null,
+      		visible:false
+    	}
+	  this.changProfil = this.changProfil.bind(this)
+	  this.onChange = this.onChange.bind(this)
+	}
 	componentDidMount() {
     	this.props.profileHandler()
+    }
+    changProfil(e) {
+    	this.setState({visible:true})
+    }
+
+    onChange(e) {
+    	let reader = new FileReader();
+    	const file = e.target.files[0];
+    	reader.readAsDataURL(file);
+    	// this.setState({file:e.target.files[0]})
+    	console.log('sssss',reader.result)
     }
 	render() {
 		return(
@@ -133,13 +64,15 @@ class Profile extends React.Component {
 				<div className="row content">
 					<div className="col-sm-4 profil box">
 						<div className="avatar">
-							<img src={this.props.init.avatar ? this.props.init.avatar : require('../assets/image/user.png')} style={{"width":"25%"}} />
+							<img src={this.props.init.avatar ? this.props.init.avatar : require('../assets/image/user.png')} style={{"width":"25%"}} onClick={this.changProfil}/>
+							<input className={this.state.visible ? "profil" : "d-none"} type="file" onChange={this.onChange}  />
 						</div>
 						<div className="info">
 							<p>{this.props.init.email}</p>
 							<p>
 							<span>{this.props.init.firstName}</span><span style={{"marginLeft":"12px"}}>{this.props.init.lastName}</span>
 							</p>
+							<button className="edit">Edit profil</button>
 						</div>
 					</div>
 					<div className="col-sm-6 post">
@@ -171,4 +104,4 @@ function mapStateToProps(state) {
   /*const onSend = (event) => {
   	console.log(event.target.value)
   }*/
-export default connect(mapStateToProps,{profileHandler})(Profile);
+export default connect(mapStateToProps,{profileHandler,updateAvatar})(Profile);

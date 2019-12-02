@@ -52,11 +52,11 @@ class Home extends React.Component {
     	this.props.listPost()
     }
 
-    onSend = (event) => {
+    onSend(){
   		this.setState({ open: true });
   	}
 
-  	closeModal = () => {
+  	closeModal(){
   		this.setState({ open: false });
   	}
 
@@ -109,6 +109,7 @@ class Home extends React.Component {
 	}
 
   	render() {
+  		console.log(this.state.open)
   		// const { loading,open } = this.state;
   		return (
   			<div style={style}>
@@ -116,14 +117,19 @@ class Home extends React.Component {
   				<Header />
 	  			<Popup
 		          	open={this.state.open}
-		          	closeOnDocumentClick
+		          	closeOnDocumentClick={false}
 		          	onClose={this.closeModal}
 		        >
 		        <div className="">
-		        	<TextArea placeholder="exprimer vous" rows={4} onChange={this.handleChange} />
-		        	<button className="btn btn-success" onClick={this.sendPost}>
-							Publier
-					</button>
+		        	<div className="">
+			            <a className="close" onClick={this.closeModal}>
+				              	&times;
+				        </a>
+			        	<TextArea placeholder="exprimer vous" rows={4} onChange={this.handleChange} />
+			        	<button className="btn btn-success" onClick={this.sendPost}>
+								Publier
+						</button>
+					</div>
 		        </div>
 		        </Popup>
 		    	<div className="post" style={{"width":"50%","margin":"0 auto"}}>

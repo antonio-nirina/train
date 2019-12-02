@@ -109,3 +109,23 @@ export function profileHandler(){
        
     }
 }
+
+export function updateAvatar(obj) {
+  return function(dispatch) {
+    fetch("/update/avatar",{
+      method:'PUT',
+      headers:{
+        'Content-Type':'application/json',
+      },
+      body:JSON.stringify(obj)
+    }).then((resp) => {
+        return resp.json();
+    }).then((res) => {       
+      dispatch({
+        type: FETCH_PROFILE,
+        res: res,
+      });   
+    });
+       
+    }
+}

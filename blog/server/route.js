@@ -10,7 +10,7 @@ module.exports = function(app) {
   	app.post('/register', Auth.signup);
   	app.post('/login', Auth.signin);
   	// app.get('/api/verify_jwt', Auth.isAuthorized, Authentication.verifyJwt);
-
+    app.get('/update/avatar', Profile.updateAvatar);
   	app.get('/api/profile', Auth.isAuthorized, Profile.fetchProfile);
     app.post('/api/like', Auth.isAuthorized,Profile.likeHandler);
   	/*app.put('/api/profile', Auth.isAuthorized, Profile.updateProfile);

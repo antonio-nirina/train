@@ -25,12 +25,12 @@ type PostDto struct {
 }
 
 type UserDto struct {
-	LastName      string `json:"lastName"`
-	FirstName      string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	FirstName string `json:"firstName"`
 	Email     string `json:"email"`
 	Telephone string `json:"telephone"`
 	Password  string `json:"password"`
-	Avatar string `json:"avatar"`
+	Avatar    string `json:"avatar"`
 }
 
 type CheckPwd struct {
@@ -118,7 +118,7 @@ func (process *Process) CreateUser(w http.ResponseWriter, r *http.Request) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
 
-	errValid := user.Validate(process.DB,usertDto.Email)
+	errValid := user.Validate(process.DB, usertDto.Email)
 
 	if errValid != "" {
 		response.ErrorJson(w, http.StatusBadRequest, errValid)
@@ -157,7 +157,7 @@ func (process *Process) Signin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := auth.CreateToken(check.Email,user.ID)
+	token, err := auth.CreateToken(check.Email, user.ID)
 	if err != nil {
 		response.ErrorJson(w, http.StatusBadRequest, "error interne")
 		return

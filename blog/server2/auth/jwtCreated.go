@@ -12,7 +12,7 @@ import (
 	_jwt "github.com/dgrijalva/jwt-go"
 )
 
-func CreateToken(user_email string,id interface{}) (string, error) {
+func CreateToken(user_email string, id interface{}) (string, error) {
 	claims := _jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["email"] = user_email

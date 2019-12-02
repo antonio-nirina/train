@@ -2,9 +2,9 @@ package model
 
 import (
 	"bytes"
+	"crypto/sha512"
 	"errors"
 	"time"
-	"crypto/sha512"
 	// "fmt"
 
 	log "github.com/antonio-nirina/formation/blog/server2/flog"
@@ -15,8 +15,8 @@ import (
 
 type User struct {
 	ID        int       `gorm:"primary_key;auto_increment" json:"id"`
-	LastName      string    `gorm:"size:255;" json:"lastname"`
-	FirstName 	string    `gorm:"size:255;" json:"firstName"`
+	LastName  string    `gorm:"size:255;" json:"lastname"`
+	FirstName string    `gorm:"size:255;" json:"firstName"`
 	Email     string    `gorm:"size:100;not null;unique" json:"email"`
 	Phone     string    `gorm:"size:255;" json:"phone"`
 	Password  string    `gorm:"size:100;not null;" json:"password"`
@@ -25,7 +25,7 @@ type User struct {
 	UpdatedAt time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-func (u *User) Validate(db *gorm.DB,email string) string {
+func (u *User) Validate(db *gorm.DB, email string) string {
 	var err error
 	if u.Email == "" || u.Password == "" {
 		return "Email and Password not blank"
@@ -37,7 +37,7 @@ func (u *User) Validate(db *gorm.DB,email string) string {
 
 	err = db.Debug().Model(User{}).Where("email = ?", email).Take(&u).Error
 	if err != nil {
-		log.ErrorOp("error_get_user_validate",err)
+		log.ErrorOp("error_get_user_validate", err)
 		return "error_interne"
 	}
 	if !gorm.IsRecordNotFoundError(err) {
@@ -47,10 +47,10 @@ func (u *User) Validate(db *gorm.DB,email string) string {
 	return ""
 }
 
-func (user *User) Save(db *gorm.DB){
+func (user *User) Save(db *gorm.DB) {
 	// fmt.Println()
 	db.Create(&user)
-} 
+}
 
 // CreateHash Will create hash password
 // It should never panic if plainText is given properly
@@ -107,7 +107,7 @@ func (u *User) DeleteAUser(db *gorm.DB, uid uint32) (int64, error) {
 	return db.RowsAffected, nil
 }
 
-func (u *User) UserConneted(db *gorm.DB, email string)(*User, error) {
+func (u *User) UserConneted(db *gorm.DB, email string) (*User, error) {
 	var err error
 	err = db.Debug().Model(User{}).Where("email = ?", email).Take(&u).Error
 	if err != nil {
@@ -119,7 +119,7 @@ func (u *User) UserConneted(db *gorm.DB, email string)(*User, error) {
 	return u, err
 }
 
-func (u *User) FindUserId(db *gorm.DB, id int)(*User, error) {
+func (u *User) FindUserId(db *gorm.DB, id int) (*User, error) {
 	var err error
 	err = db.Debug().Model(User{}).Where("id = ?", id).Take(&u).Error
 	if err != nil {

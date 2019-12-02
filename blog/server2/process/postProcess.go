@@ -5,56 +5,56 @@ import (
 	"strings"
 	"time"
 	//"errors"
-	"html"
 	"fmt"
+	"html"
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
 	"github.com/antonio-nirina/formation/blog/server2/auth"
 	log "github.com/antonio-nirina/formation/blog/server2/flog"
-	 "github.com/antonio-nirina/formation/blog/server2/model"
+	"github.com/antonio-nirina/formation/blog/server2/model"
 	"github.com/antonio-nirina/formation/blog/server2/response"
+	"github.com/gorilla/mux"
 )
 
 type arResp struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data   []interface{} `json:"data"`
+	Code    int           `json:"code"`
+	Message string        `json:"message"`
+	Data    []interface{} `json:"data"`
 }
 
 type objResp struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Data   interface{} `json:"data"`
+	Code    int         `json:"code"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
 }
 
 type ObjectDto struct {
-	IsPost    bool    `json:"isPost"`
-	Id int64 `json:"id"`
+	IsPost bool  `json:"isPost"`
+	Id     int64 `json:"id"`
 }
 
 type CommentDto struct {
-	Id int64 `json:"id"`
+	Id      int64  `json:"id"`
 	Content string `json:"content"`
 }
 
 type OutPost struct {
-	ID interface{} `json:"id"`
-	Title string `json:"title"`
-	Content string `json:"content"`
-	FirstName string `json:"firstName"`
-	LastName string `json:"lastName"`
-	Like int `json:"like"`
+	ID        interface{} `json:"id"`
+	Title     string      `json:"title"`
+	Content   string      `json:"content"`
+	FirstName string      `json:"firstName"`
+	LastName  string      `json:"lastName"`
+	Like      int         `json:"like"`
 }
 
 type OutUser struct {
-	ID interface{} `json:"id"`
-	LastName string `json:"lastName"`
-	FirstName string `json:"firstName"`
-	Email string `json:"email"`
-	Phone string `json:"phone"`
-	Avatar string `json:"avatar"`
+	ID        interface{} `json:"id"`
+	LastName  string      `json:"lastName"`
+	FirstName string      `json:"firstName"`
+	Email     string      `json:"email"`
+	Phone     string      `json:"phone"`
+	Avatar    string      `json:"avatar"`
 }
 
 var arrResp = arResp{}
@@ -63,17 +63,18 @@ var comDto = CommentDto{}
 var out = OutPost{}
 var object = objResp{}
 var user = model.User{}
+
 // var resp = Resp{}
 func (process *Process) AllPost(w http.ResponseWriter, r *http.Request) {
-	var array []interface{}// map[string]interface{}
+	var array []interface{} // map[string]interface{}
 	posts, err := post.FindAllPosts(process.DB)
 
 	if err != nil {
-		log.ErrorOp("get_all_post",err)
+		log.ErrorOp("get_all_post", err)
 		response.ErrorJson(w, http.StatusInternalServerError, "error interne")
 		return
 	}
-// Set json in array 
+	// Set json in array
 	for _, val := range *posts {
 		out.ID = val.ID
 		out.Title = val.Title
@@ -81,10 +82,10 @@ func (process *Process) AllPost(w http.ResponseWriter, r *http.Request) {
 		out.Like = val.Like
 		out.LastName = val.Author.LastName
 		out.FirstName = val.Author.FirstName
-		array = append(array,out)
+		array = append(array, out)
 	}
 
-	response.SuccessJSon(w, http.StatusOK,arrResp.arrResponse(200,"sucess",array))
+	response.SuccessJSon(w, http.StatusOK, arrResp.arrResponse(200, "sucess", array))
 }
 
 func (process *Process) FetchPost(w http.ResponseWriter, r *http.Request) {
@@ -92,15 +93,15 @@ func (process *Process) FetchPost(w http.ResponseWriter, r *http.Request) {
 	_id, err := strconv.ParseInt(id["id"], 10, 64)
 
 	if err != nil {
-		log.ErrorOp("get_id_post",err)
+		log.ErrorOp("get_id_post", err)
 		response.ErrorJson(w, http.StatusBadRequest, "error_interne")
 		return
 	}
 
-	_post, err := post.FindPostId(process.DB,_id)
+	_post, err := post.FindPostId(process.DB, _id)
 
 	if err != nil {
-		log.ErrorOp("get_one_post",err)
+		log.ErrorOp("get_one_post", err)
 		response.ErrorJson(w, http.StatusInternalServerError, "error interne")
 		return
 	}
@@ -111,7 +112,7 @@ func (process *Process) FetchPost(w http.ResponseWriter, r *http.Request) {
 	out.Like = _post.Like
 	out.FirstName = _post.Author.FirstName
 	out.LastName = _post.Author.LastName
-	response.SuccessJSon(w, http.StatusOK,object.objectResponse(200,"sucess",out))
+	response.SuccessJSon(w, http.StatusOK, object.objectResponse(200, "sucess", out))
 }
 
 func (process *Process) CreateComment(w http.ResponseWriter, r *http.Request) {
@@ -136,10 +137,10 @@ func (process *Process) CreateComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_post, err := post.FindPostId(process.DB,comDto.Id)
+	_post, err := post.FindPostId(process.DB, comDto.Id)
 
 	if err != nil {
-		log.ErrorOp("get_one_post",err)
+		log.ErrorOp("get_one_post", err)
 		response.ErrorJson(w, http.StatusInternalServerError, "error interne")
 		return
 	}
@@ -181,7 +182,7 @@ func (process *Process) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	_id, err := strconv.ParseInt(id["id"], 10, 64)
 
 	if err != nil {
-		log.ErrorOp("get_id_comment",err)
+		log.ErrorOp("get_id_comment", err)
 		response.ErrorJson(w, http.StatusBadRequest, "error_interne")
 		return
 	}
@@ -193,7 +194,7 @@ func (process *Process) UpdateComment(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// email, err := auth.GetUserCurrent(r)
-	comVal , err := com.FindById(process.DB, _id)
+	comVal, err := com.FindById(process.DB, _id)
 	fmt.Println(comVal)
 
 	// response.SuccessJSon(w, http.StatusOK, ARespCreated(201, "comments has been created"))
@@ -205,15 +206,15 @@ func (process *Process) FetchProfile(w http.ResponseWriter, r *http.Request) {
 	_id, err := strconv.Atoi(id["id"])
 
 	if err != nil {
-		log.ErrorOp("get_id_post",err)
+		log.ErrorOp("get_id_post", err)
 		response.ErrorJson(w, http.StatusBadRequest, "error interne")
 		return
 	}
 
-	_user, err := user.FindUserId(process.DB,_id)
+	_user, err := user.FindUserId(process.DB, _id)
 
 	if err != nil {
-		log.ErrorOp("get_one_profil",err)
+		log.ErrorOp("get_one_profil", err)
 		response.ErrorJson(w, http.StatusInternalServerError, "user not found")
 		return
 	}
@@ -222,15 +223,15 @@ func (process *Process) FetchProfile(w http.ResponseWriter, r *http.Request) {
 	outUser.LastName = _user.LastName
 	outUser.Email = _user.Email
 	outUser.Phone = _user.Phone
-	outUser.Avatar = _user.Avatar 
+	outUser.Avatar = _user.Avatar
 
 	fmt.Println(_user)
 
-	response.SuccessJSon(w, http.StatusOK,object.objectResponse(200,"sucess",outUser))
+	response.SuccessJSon(w, http.StatusOK, object.objectResponse(200, "sucess", outUser))
 
 }
 
-func (process *Process) LikeHandler (w http.ResponseWriter, r *http.Request) {
+func (process *Process) LikeHandler(w http.ResponseWriter, r *http.Request) {
 	objDto := ObjectDto{}
 	post := model.Post{}
 	com := model.Comment{}
@@ -242,24 +243,24 @@ func (process *Process) LikeHandler (w http.ResponseWriter, r *http.Request) {
 	}
 
 	if objDto.IsPost {
-		_post,err := post.FindPostId(process.DB,objDto.Id)
+		_post, err := post.FindPostId(process.DB, objDto.Id)
 
 		if err != nil {
-			log.ErrorOp("get_id_post",err)
+			log.ErrorOp("get_id_post", err)
 			response.ErrorJson(w, http.StatusBadRequest, "error interne")
 			return
 		}
-		x := fmt.Sprintln("post",_post)
+		x := fmt.Sprintln("post", _post)
 		fmt.Println(x)
 		// post.Save(process.DB)
 	} else {
-		_com,err := com.FindById(process.DB,objDto.Id)
+		_com, err := com.FindById(process.DB, objDto.Id)
 		if err != nil {
-			log.ErrorOp("get_id_post",err)
+			log.ErrorOp("get_id_post", err)
 			response.ErrorJson(w, http.StatusBadRequest, "error interne")
 			return
-		} 
-		x := fmt.Sprintln("coms",_com)
+		}
+		x := fmt.Sprintln("coms", _com)
 		// com.Save(process.DB)
 		fmt.Println(x)
 	}

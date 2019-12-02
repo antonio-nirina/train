@@ -16,10 +16,12 @@ exports.fetchProfile = function(req, res, next) {
 	let decoded = jwt.decode(token, {complete: true});
 	User.findOne({email: decoded.payload.email }, function(err, resp) {
 		Post.find({authorId:resp._id},function(err,post) {
+			let file = "";
+			file = setTypeFile(resp)
 			const obj = {
 				id:resp._id,
 				email:resp.email,
-				avatar:resp.avatar ? resp.avatar : "",
+				avatar:file ? file : "",
 				firstName:resp.firstName,
 				lastName:resp.lastName,
 				post:post
@@ -41,42 +43,50 @@ exports.fetchProfile = function(req, res, next) {
  * @param next
  */
  exports.updateAvatar = function(req, res, next) {
- 	if (!fs.existsSync("public/users/")) {
-  		fs.mkdir("public/users/",() => {
- 			console.log("dir_is_created")
- 		})
-	}
 	const date = new Date();
+	let data;
  	const nameFile = req.body.id+date.getDate()+date.getMonth()+date.getFullYear();
  	const path = "public/users/"+nameFile+"."+req.body.type
- 	buf = new Buffer(req.body.file, 'base64');
+ 	const file = req.body.file
+
+ 	if (req.body.type == "jpeg") {
+ 		data = file.replace(/^data:image\/jpeg;base64,/, "");
+ 	} else if (req.body.type == "jpg") {
+ 		data = file.replace(/^data:image\/jpg;base64,/, "");
+ 	} else if (req.body.type == "png") {
+ 		data = file.replace(/^data:image\/png;base64,/, "");
+ 	}
+
+ 	buf = new Buffer(data, 'base64');
  	fs.writeFile(path,buf,(err) => {
         if(err) throw err
             console.log('file has copy');
     });
 
- 	User.findById({_id: req.body.id}, function(err, user) {
+ 	User.findById({_id: req.body.id}, function(err, resp) {
     	if (err) {
 	      return res.status(400).json({
 	      	code:400,
 	        message: 'User not found.'
 	      });
 		}
-		user.avatar = path
-		Post.find({authorId:user._id},function(err,post) {
-			const obj = {
-				id:resp._id,
-				email:resp.email,
-				avatar:resp.avatar ? resp.avatar : "",
-				firstName:resp.firstName,
-				lastName:resp.lastName,
-				post:post
-			}
-			res.send({
-				code: 200,
-	    		data: obj
-	  		});
-		})
+		resp.avatar = path
+		resp.save(function(err, post) {  
+			Post.find({authorId:resp._id},function(err,post) {
+				const obj = {
+					id:resp._id,
+					email:resp.email,
+					avatar:resp.avatar ? setTypeFile(resp) : "",
+					firstName:resp.firstName,
+					lastName:resp.lastName,
+					post:post
+				}
+				res.send({
+					code: 200,
+		    		data: obj
+		  		});
+			});    
+	    });
     })
  }
 
@@ -131,4 +141,23 @@ exports.likeHandler = function(req, res, next) {
 		    });
     	})
 	}
+}
+
+const setTypeFile = (resp) => {
+	let file = "";
+
+	if (resp.avatar && fs.existsSync(resp.avatar)) {
+		const type = (resp.avatar).split(".")[1]
+		const af = fs.readFileSync(resp.avatar);
+		if (type == "jpeg") {
+	 		data = "data:image/jpeg;base64,";
+	 	} else if (type == "jpg") {
+	 		data = "data:image/jpg;base64,";
+	 	} else if (type == "png") {
+	 		data = "data:image/png;base64,";
+	 	}
+		file = data + (new Buffer(af).toString('base64'));
+	}
+
+	return file
 }

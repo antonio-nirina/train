@@ -58,7 +58,7 @@ class Header extends React.Component {
 				      	this.props.isConnected ? 
 				      	(<li className="nav-item dropdown">
 					        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					          <img style={{"width":"36px"}} src={require('../assets/image/user.png')} />
+					          <img style={{"width":"36px","borderRadius":"102px"}} src={this.props.profil ? this.props.profil.avatar : require('../assets/image/user.png')} />
 					        </a>
 					        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
 					          <span className="dropdown-item" >
@@ -88,14 +88,21 @@ class Header extends React.Component {
 
 function mapStateToProps(state) {
 	let a_status = state.login.authenticated;
+	let profile = state.user.profils;
 	let init = ''
+	let list = "";
 
 	if (a_status) {
 		init = a_status ? true : ""
 	}
 
+	if (profile) {
+		list = profile.code == 200 ? profile.data : ""
+	}
+
 	return {
 		isConnected: init ? true : false,
+		profil:list
 	}
 }
 

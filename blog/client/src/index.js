@@ -39,7 +39,7 @@ ReactDOM.render(
 			<Route  path="/init" component={Init}/>
 			<Route  path="/signin" component={Login}/>
 			<Route  path="/signup" component={Signup}/>
-			<Route  path="/profile" component={Profile}/>
+			<RequireAuth  path="/profile" component={Profile}/>
 			<Route  path="/contact" component={Contact}/>
 		</Switch>
 	</Router>

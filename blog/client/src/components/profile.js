@@ -53,9 +53,22 @@ class Profile extends React.Component {
     onChange(e) {
     	let reader = new FileReader();
     	const file = e.target.files[0];
+    	const type = (file.type).split("/")
     	reader.readAsDataURL(file);
     	// this.setState({file:e.target.files[0]})
-    	console.log('sssss',reader.result)
+    	if (this.props.init) {
+    		reader.onload = () => {
+            	const obj = {
+	    			"id":this.props.init.id,
+	    			"type":type[1],
+	    			"file":reader.result
+    			}
+				console.log(obj)
+				this.props.updateAvatar(obj)
+          };
+    		
+    	}
+    	
     }
 	render() {
 		return(

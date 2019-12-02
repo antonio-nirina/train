@@ -2,6 +2,7 @@ const User = require('../model/user');
 const Post = require('../model/post');
 const Comment = require('../model/comment');
 const jwt  = require('jsonwebtoken');
+const fs = require('fs');
 
 /**
  * Fetch profile information
@@ -30,6 +31,55 @@ exports.fetchProfile = function(req, res, next) {
 		})
 	})
 }
+
+
+/**
+ * Update Avatar
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+ exports.updateAvatar = function(req, res, next) {
+ 	if (!fs.existsSync("public/users/")) {
+  		fs.mkdir("public/users/",() => {
+ 			console.log("dir_is_created")
+ 		})
+	}
+	const date = new Date();
+ 	const nameFile = req.body.id+date.getDate()+date.getMonth()+date.getFullYear();
+ 	const path = "public/users/"+nameFile+"."+req.body.type
+ 	buf = new Buffer(req.body.file, 'base64');
+ 	fs.writeFile(path,buf,(err) => {
+        if(err) throw err
+            console.log('file has copy');
+    });
+
+ 	User.findById({_id: req.body.id}, function(err, user) {
+    	if (err) {
+	      return res.status(400).json({
+	      	code:400,
+	        message: 'User not found.'
+	      });
+		}
+		user.avatar = path
+		Post.find({authorId:user._id},function(err,post) {
+			const obj = {
+				id:resp._id,
+				email:resp.email,
+				avatar:resp.avatar ? resp.avatar : "",
+				firstName:resp.firstName,
+				lastName:resp.lastName,
+				post:post
+			}
+			res.send({
+				code: 200,
+	    		data: obj
+	  		});
+		})
+    })
+ }
+
 
 /**
  * like Post/comment

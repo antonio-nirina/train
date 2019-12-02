@@ -13,3 +13,4 @@ _cgo_*
 _obj
 _test
 _testmain.go
+/config/

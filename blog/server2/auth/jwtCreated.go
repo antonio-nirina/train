@@ -9,6 +9,10 @@ import (
 	"strings"
 	"time"
 	"path/filepath"
+	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
+	"io/ioutil"
 
 	_jwt "github.com/dgrijalva/jwt-go"
 )
@@ -25,6 +29,21 @@ func CreateToken(user_email string, id interface{}) (string, error) {
 	fmt.Println(private)
 	token := _jwt.NewWithClaims(_jwt.SigningMethodRS256, claims)
 	return token.SignedString(private+"private.key")
+}
+
+func getPrivateKey(path string) (*rsa.PrivateKey, error) {
+	b, err := ioutil.ReadFile(path)
+    if err != nil {
+        return nil, err
+    }
+
+    block, _ := pem.Decode(b)
+    der, err := x509.DecryptPEMBlock(block, []byte(*PrivateKeyPassword))
+    if err != nil {
+        return nil, err
+    }
+
+    return x509.ParsePKCS1PrivateKey(der)
 }
 
 func OnCheckJWTInvalid(r *http.Request) error {

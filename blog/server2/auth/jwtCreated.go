@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 	"time"
+	"path/filepath"
 
 	_jwt "github.com/dgrijalva/jwt-go"
 )
@@ -20,8 +21,10 @@ func CreateToken(user_email string, id interface{}) (string, error) {
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix() //Token expires after 1 hour
 	// token := _jwt.NewWithClaims(_jwt.SigningMethodHS256, claims)
 	// return token.SignedString([]byte(os.Getenv("APP_SECRET")))
+	private := fmt.Sprintf("%s%s", filepath.Dir(""), "/config/")
+	fmt.Println(private)
 	token := _jwt.NewWithClaims(_jwt.SigningMethodRS256, claims)
-	return token.SignedString([]byte(os.Getenv("APP_SECRET")))
+	return token.SignedString(private+"private.key")
 }
 
 func OnCheckJWTInvalid(r *http.Request) error {
@@ -52,7 +55,7 @@ func getCurrentToken(r *http.Request) string {
 
 	return tknStr
 }
-
+//Verify Token
 func GetUserCurrent(r *http.Request) (string, error) {
 	tknStr := getCurrentToken(r)
 

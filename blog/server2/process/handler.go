@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 	//"errors"
-	// "fmt"
+	"fmt"
 	"net/http"
 
 	//"github.com/gorilla/mux"
@@ -136,7 +136,7 @@ func (process *Process) Signin(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&check)
 
 	if err != nil {
-		response.ErrorJson(w, http.StatusBadRequest, "error interne")
+		response.ErrorJson(w, http.StatusBadRequest, "bad request")
 		return
 	}
 
@@ -146,20 +146,22 @@ func (process *Process) Signin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = process.DB.Debug().Model(model.User{}).Where("email = ?", check.Email).Take(&user).Error
+	
 	if err != nil {
-		response.ErrorJson(w, http.StatusBadRequest, "error interne")
+		response.ErrorJson(w, http.StatusBadRequest, "user not found")
 		return
 	}
 
 	err = user.VerifyPassword(check.Password, user.Password)
 	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
-		response.ErrorJson(w, http.StatusBadRequest, "error interne")
+		response.ErrorJson(w, http.StatusBadRequest, "error interne not verified")
 		return
 	}
 
 	token, err := auth.CreateToken(check.Email, user.ID)
+	fmt.Println(err)
 	if err != nil {
-		response.ErrorJson(w, http.StatusBadRequest, "error interne")
+		response.ErrorJson(w, http.StatusBadRequest, "error internetoken not created")
 		return
 	}
 

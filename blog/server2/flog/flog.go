@@ -1,13 +1,14 @@
 package flog
 
 import (
-  "filepath"
+  "fmt"
+  "path/filepath"
   "os"
 
   log "github.com/sirupsen/logrus"
 )
 
-func Info(op string, args ...interface{}) {
+func Info(op string, args interface{}) {
   log.SetFormatter(&log.JSONFormatter{})
   log.WithFields(log.Fields{
     "op":   op,

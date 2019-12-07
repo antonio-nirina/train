@@ -30,7 +30,18 @@ https://stackblitz.com/edit/react-wpbpxy
 #### Docker Compose Gitlab-CI Vuejs:
 
 https://github.com/codingfriend1/Feathers-Vue
-#### Blog:
+#### Tools:
+- Nodejs [downlooad](https://nodejs.org/en/download/)
+- Expo [downlooad](https://facebook.github.io/react-native/docs/getting-started)
+- Create React App [here](https://github.com/facebook/create-react-app)
+- Postman 
+- Laragon [download](https://laragon.org/download/index.html)
+- Git [download](https://git-scm.com/downloads)
+- Mongo [download](https://www.mongodb.com/download-center)
+- Robot 3T 
+- Navigateur Chrome/Firefox
+- VsCode/SublimeText/Intellij/Atom
+- Install Expo Android
 
-https://github.com/jaceklaskowski/scalania
+
 

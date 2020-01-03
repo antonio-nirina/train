@@ -2,13 +2,15 @@ package main
 
 import (
 	"fmt"
+	// "bytes"
 )
 
 func main(){
-	n := 4
-	var ar = []int{31,28,31,30,31,30,31,31,30,31,30,31}
-	factoriel(n)
-	moyen(ar)
+	// n := 4
+	// var ar = []int{31,28,31,30,31,30,31,31,30,31,30,31}
+	// factoriel(n)
+	// moyen(ar)
+	aArr()
 }
 
 func factoriel(n int){
@@ -61,4 +63,39 @@ func printer(){
 		
 		fmt.Println("")	
 	}
+}
+
+func puissance(){
+	expo := 10
+	val := 2
+	puiss := 1
+
+	for i := 0; i < expo; i ++ {
+		puiss = val*puiss 
+	}
+
+	fmt.Println(puiss)
+}
+
+func chzx() {
+	for i := 0; i < 3; i++ {
+		defer fmt.Println(i)
+	}
+	fmt.Println("done")
+}
+
+func aPoint(){
+	i := 42
+	p := &i 
+	*p = 33
+	fmt.Println(i)
+}
+
+func aArr() {
+	a := make([]int, 5)
+	for i := 0; i<3; i++ {
+		a[i] = i
+	}
+
+	fmt.Println(len(a),cap(a),a)
 }

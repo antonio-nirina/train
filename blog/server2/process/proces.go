@@ -36,6 +36,7 @@ func (process *Process) Initialize(dbUser string, dbPassword string, dbHost stri
 	process.Router.HandleFunc("/register", process.CreateUser).Methods("POST")
 	process.Router.HandleFunc("/login", process.Signin).Methods("POST")
 
+	process.Router.HandleFunc("/api/user/current", auth.HelperTokenMiddleware(process.UserCurrent)).Methods("GET")
 	process.Router.HandleFunc("/api/create/post", auth.HelperTokenMiddleware(process.CreatePost)).Methods("POST")
 	process.Router.HandleFunc("/api/posts", auth.HelperTokenMiddleware(process.AllPost)).Methods("GET")
 	process.Router.HandleFunc("/api/post/{id}", auth.HelperTokenMiddleware(process.FetchPost)).Methods("GET")

@@ -8,4 +8,4 @@ heroku buildpacks:set  heroku/nodejs
 
 ###### PROD
 
-https://training-appv1.herokuapp.com/api
+https://trainingv21.herokuapp.com/login

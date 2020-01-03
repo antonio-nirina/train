@@ -52,6 +52,31 @@ func (process *Process) Home(w http.ResponseWriter, r *http.Request) {
 	response.SuccessJSon(w, http.StatusOK, hh)
 }
 
+func (process *Process) UserCurrent(w http.ResponseWriter, r *http.Request) {
+	usertDto := UserDto{}
+	email, err := auth.GetUserCurrent(r)
+
+	if err != nil {
+		response.ErrorJson(w, http.StatusBadRequest, "user not found")
+		return
+	}
+
+	connected, err := user.UserConneted(process.DB, email)
+	av := ""
+
+	if connected.Avatar != "" {
+		av = connected.Avatar
+	}
+	usertDto.LastName = connected.LastName
+	usertDto.FirstName = connected.FirstName
+	usertDto.Email = connected.Email
+	usertDto.Telephone = connected.Phone
+	usertDto.Avatar = av
+	usertDto.Password = ""
+	response.SuccessJSon(w, http.StatusOK, usertDto)
+
+}
+
 func (process *Process) CreatePost(w http.ResponseWriter, r *http.Request) {
 	user := model.User{}
 	postDto := PostDto{}

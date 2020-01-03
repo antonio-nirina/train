@@ -108,6 +108,12 @@ exports.signin = function(req, res, next) {
                     data: token
                 }); 
             });
+        } else {
+          res.json({
+              success : false,
+              code_status : 400,
+              message: "password or login error"
+          }); 
         }
 	})
 }

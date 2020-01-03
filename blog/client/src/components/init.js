@@ -8,6 +8,7 @@ class Init extends Component {
     super();
     this.state = {
       list: [],
+      collects:[],
       value:'',
       isShowLenged:false
     };
@@ -17,6 +18,7 @@ class Init extends Component {
     this.changeAction = this.changeAction.bind(this)
     this.add = this.add.bind(this)
     this.onChangeAll = this.onChangeAll.bind(this)
+    this.collectionForm = this.collectionForm.bind(this)
   }
 
   onDeleted(el,i){
@@ -70,6 +72,10 @@ class Init extends Component {
      this.setState({value:event.target.value});
   }
 
+  collectionForm() {
+    this.setState({collects:[...this.state.collects,1]})
+  }
+
   render() {
     return (
       <div className="init">
@@ -119,9 +125,27 @@ class Init extends Component {
                 </div>
               </div>
               ) : null
-            }  
+            }
+            {/*<div className="form-multiple" style={{"textAlign":"center","marginTop":"72px"}}>
+              <button className="btn btn-danger" onClick={this.collectionForm}>Add</button>
+              {this.state.collects.length > 0  ? this.state.collects.map((el,i) => {
+                return (
+                  <div className="form-mult" style={{"textAlign":"center","marginTop":"72px"}} key={i}>
+                    <div className="">
+                      <input className="form-control" type="text"  />
+                    </div>
+                    <div className="" style={{"marginTop":"16px"}}>
+                      <input className="form-control" type="text"  />
+                    </div>
+                      <button style={{"marginTop":"16px"}}>Remove {i}</button>
+                  </div>
+                  )
+                })
+              :null}
+            </div>*/}
           </div>
         </div>
+
         <Footer/>
       </div>
     );

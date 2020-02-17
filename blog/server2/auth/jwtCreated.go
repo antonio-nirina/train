@@ -19,7 +19,7 @@ import (
 
 const (
 	privateKeyPath = "config/private.key"
-	publicKeyPath = "config/public.pem"
+	publicKeyPath  = "config/public.pem"
 )
 
 /*func CreateToken(user_email string, id interface{}) (string, error) {
@@ -38,7 +38,7 @@ func CreateToken(user_email string, id interface{}) (string, error) {
 	claims["email"] = user_email
 	claims["id"] = id
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
-	t := _jwt.NewWithClaims(_jwt.GetSigningMethod("RS256"),claims)
+	t := _jwt.NewWithClaims(_jwt.GetSigningMethod("RS256"), claims)
 	// Creat token string
 	return t.SignedString(getPrivateKey())
 }
@@ -46,13 +46,13 @@ func CreateToken(user_email string, id interface{}) (string, error) {
 func getPrivateKey() *rsa.PrivateKey {
 	key, err := ioutil.ReadFile(privateKeyPath)
 	if err != nil {
-        panic(err)
-    }
-    signKey, err := _jwt.ParseRSAPrivateKeyFromPEM(key)
-    if err != nil {
-        panic(err)
-    }
-    return signKey
+		panic(err)
+	}
+	signKey, err := _jwt.ParseRSAPrivateKeyFromPEM(key)
+	if err != nil {
+		panic(err)
+	}
+	return signKey
 }
 
 /*func OnCheckJWTInvalid(r *http.Request) error {
@@ -76,7 +76,7 @@ func getPrivateKey() *rsa.PrivateKey {
 func OnCheckJWTInvalid(r *http.Request) error {
 	tknStr := getCurrentToken(r)
 	verifyBytes, err := ioutil.ReadFile(publicKeyPath)
-	
+
 	if err != nil {
 		return err
 	}
@@ -113,11 +113,12 @@ func getCurrentToken(r *http.Request) string {
 
 	return tknStr
 }
+
 //Verify Token
 func GetUserCurrent(r *http.Request) (string, error) {
 	tknStr := getCurrentToken(r)
 	verifyBytes, err := ioutil.ReadFile(publicKeyPath)
-	
+
 	if err != nil {
 		return "", err
 	}
@@ -127,7 +128,6 @@ func GetUserCurrent(r *http.Request) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 
 	token, err := _jwt.Parse(tknStr, func(token *_jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*_jwt.SigningMethodRSA); !ok {
@@ -159,4 +159,3 @@ func Pretty(data interface{}) {
 
 	fmt.Printf(string(b))
 }
-

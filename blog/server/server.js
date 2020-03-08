@@ -12,8 +12,8 @@ require('dotenv').config();
 // DB Setup (connect mongoose and instance of mongodb)
 // sudo systemctl status mongodb
 // mongoose.connect('mongodb://username:password@host:port/database?options...', {useNewUrlParser: true});
-mongoose.connect('mongodb://localhost:27017/blog', {useNewUrlParser: true});
-//mongoose.connect(process.env.database);
+// mongoose.connect('mongodb://localhost:27017/blog', {useNewUrlParser: true});
+mongoose.connect(process.env.database);
 mongoose.connection.on('connected',() => {
 	console.log('connected in database success'); 
 });

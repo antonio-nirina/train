@@ -1,0 +1,129 @@
+
+/*
+display: block => vao azo ampesaina padding
+parent:heigth => même heigth enfant par line-heigth; 
+*/
+
+.add{
+	background-color: gray;
+    display: block;
+    width: 47px;
+    text-align: center;
+    position: absolute;
+	top: 26px;
+	right: 15px;
+	height: 38px;
+}
+
+.mb{
+	padding: 6px 4px;
+    border-radius: 10px solid red;
+    border: yellowgreen;
+    border-radius: 5px;
+    background-color: gray;
+}
+
+.liste{
+	width: 166px;
+	margin: 0 auto;
+}
+.liste a{
+	text-decoration: none;
+	border: 1px solid rgba(175,42,47,0.2);
+}
+
+.all{
+	position: absolute;
+	border-right: 1px solid gray;
+	top: 26px;
+	left: 15px;
+	border-radius: 25px 0 0 25px;
+	border: 1px solid;
+}
+
+.title-f{
+	color: #515365;
+	font-size: 34px;
+	font-weight: 300px;
+}
+
+.footer{
+	background-color: #e8e8e8;
+	width: 100%;
+	position: absolute;
+}
+
+p,h2,h3{
+	font-family: Montserrat,Arial,Helvetica,Sans-Serif;
+	font-size: 12px;
+line-height: 23px;
+}
+.top{
+	padding-top: 24px;
+    padding-bottom: 23px;
+}
+
+.cars{
+	width: 100%
+}
+
+
+.isScrolling{
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+.list-offer{
+	position: relative;
+	background-color: #d51a21;
+}
+
+.list {
+	background-color: #fff;
+}
+
+.vip-ds{
+	box-sizing: border-box;
+}
+
+.prem-ds{
+	box-sizing: border-box;
+}
+
+.inter-block{
+	border-radius: 4px !important;
+	box-shadow:-.5px -.5px 20px .2px rgba(0,0,0,.4);
+}
+.list-offer .lf{
+	position: absolute;
+	left: 329px;
+	width: 50%;
+}
+
+.list-offer .lri {
+	position: absolute;
+	width: 50%;
+}
+
+.bt{
+	color: #29abe2;
+}
+
+.demo-loadmore-list {
+  min-height: 350px;
+}
+a{
+	color: #1890ff;
+}
+
+.init .footer {
+	bottom: 0;
+}
+
+.dec{
+	cursor: pointer;
+}
+.box{
+	border: 1px solid #d1d5da;
+	border-radius: 3px;
+}

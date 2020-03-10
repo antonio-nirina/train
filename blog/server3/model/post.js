@@ -5,8 +5,7 @@ const Schema = mongoose.Schema;
 const postSchema = new Schema({
   title: String,
   content: String,  
-  authorId: String,
-  authorName: String,
+  user:{type: Schema.Types.Mixed, ref: 'user'},
   time: Date,
   like:Number
 });

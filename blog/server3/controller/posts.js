@@ -19,8 +19,7 @@ exports.createPost = function(req, res, next) {
 	  	const post = new Post({
 	  		title: title,
 			  content: content,  
-		  	authorId: resp._id,
-		  	authorName: resp.lastName,
+		  	user:resp,
 		  	time: new Date(),
 		  	like:0
 	    });
@@ -55,16 +54,16 @@ exports.fetchPosts = function(req, res, next) {
     })
     .exec(function(err, posts) {
       if (err) {
-        console.log(err);
         return res.status(422).json({
           message: 'Error! Could not retrieve posts.'
         });
       }
       res.json({
-         code:200,
-         message: 'sucess',
-         data: posts
-       });
+       code:200,
+       message: 'sucess',
+       data: posts
+     });
+      
     });
 }
 

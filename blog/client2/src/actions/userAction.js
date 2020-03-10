@@ -38,7 +38,12 @@ export function listPost(){
       },
     }).then((resp) => {
         return resp.json();
-    }).then((res) => {     
+    }).then((res) => {
+    console.log(res)
+      let list = [];
+      res.map(e => {
+        
+      })     
       dispatch({
         type: POSTLIST,
         res: res,

@@ -20,7 +20,7 @@ const webSocket = function(server){
 	    				firstname: resp.firstName
 	    			}
 	    			users.push(currents)
-	                // console.log(users)
+	                console.log(users)
 	    			socket.emit('new_comment',{user:currents})
 	    		})
 	  		} catch(err) {

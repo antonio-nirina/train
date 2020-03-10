@@ -14,6 +14,7 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
+    	Tools.onSendSocket()
     	this.props.listPost()
     }
 

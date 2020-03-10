@@ -11,6 +11,28 @@ const userSchema = new Schema({
   avatar: String
 });
 
+userSchema.pre('save', function(next) {  // before saving the model, run this funtion
+  const user = this;  // get access to the user model
+  bcrypt.genSalt(10, function(err, salt) {  // generate a salt, then run callback
+    if (err) {
+      return next(err);
+    }
+
+    // hash (encrypt) our password using the salt
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+
+      if (err) {
+        return next(err);
+      }
+
+      // overwrite plain text password with encrypted password
+      user.password = hash;
+      // go ahead and save the model
+      next();
+    });
+  });
+});
+
 // Create the model class
 const ModelClass = mongoose.model('user', userSchema);
 // Export the model

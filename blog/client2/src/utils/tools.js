@@ -12,7 +12,7 @@ const checkToken = () => {
 }
 
 const Tools = {
-	onSendSocket : function(event) {
+	onSendSocket : function() {
 		const token = localStorage.getItem('token');
 		if (token) {
 			const socket = io("http://localhost:8080/")
@@ -21,12 +21,6 @@ const Tools = {
 					token: token
 				})
 			})
-
-			if (event.type === "like") {
-					socket.emit("send_like",{
-						event: event
-					})
-			} 
 			
 		}
 	},

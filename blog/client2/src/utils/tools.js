@@ -33,6 +33,20 @@ const Tools = {
       		}) 
 
 		}
+	},
+	onCreatePost : function(data){
+		const token = localStorage.getItem('token');
+
+		if (token) {
+			const socket = io("http://localhost:8080/")
+      		socket.on("connect",() => {
+				socket.emit("create_post",{
+					token: token,
+					data:data
+				})
+			}) 
+
+		}
 	}
 }
 

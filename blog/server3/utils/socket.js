@@ -20,13 +20,13 @@ const webSocket = function(server){
 	    				firstname: resp.firstName
 	    			}
 	    			users.push(currents)
-	                console.log(users)
+	                // console.log(users)
 	    			socket.emit('new_comment',{user:currents})
 	    		})
 	  		} catch(err) {
 		    	console.log(err.message)
 	  		}
-		})
+		});
 		socket.on("send_like", ({event}) => {
 			if (event.type === "like") {
 				Post.findById({_id: event.id}, function(err, resp) {
@@ -37,7 +37,11 @@ const webSocket = function(server){
 
 		    	})
 			}
+		});
+		socket.on("create_post",({token,data}) => {
+			console.log(data)
 		})
+
 		/*socket.on("disconnect", () => {
 			socket.broadcast.emit('user_leave',{user:currents})
 		})*/

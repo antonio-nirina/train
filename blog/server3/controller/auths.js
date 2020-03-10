@@ -102,7 +102,7 @@ exports.signin = function(req, res, next) {
               message: "password or login error"
           });
 		}
-console.log(resp)
+
 		bcrypt.compare(req.body.password,resp.password,(err,res1) => {
           console.log(err)
           if (err) {

@@ -39,7 +39,19 @@ const webSocket = function(server){
 			}
 		});
 		socket.on("create_post",({token,data}) => {
-			console.log(data)
+			if(token && data){
+				const decoded = jwt.verify(token, publicKey);
+	    		User.findOne({email: decoded.email }, function(err, resp) {
+	    			const post = {
+	    				title:data.title,
+	    				content : data.content,
+	    				user:resp
+	    			}
+	                // console.log(post)
+	    			socket.broadcast.emit('new_post',{posts:post})
+	    		})	
+			}
+			
 		})
 
 		/*socket.on("disconnect", () => {

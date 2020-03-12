@@ -1,4 +1,5 @@
 import {REGISTER,POSTLIST,POST_CREATE,ADD_LIKE,FETCH_PROFILE} from './types';
+import Tools from "../utils/tools";
 // import axios from 'axios';
 
 export function register(data,historyPush){

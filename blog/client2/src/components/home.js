@@ -11,6 +11,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import io from "socket.io-client";
 
 import Header from './header';
 import Footer from './footer';
@@ -48,6 +49,11 @@ class Home extends React.Component {
     	Tools.onSendSocket()
     	this.props.listPost()
     }
+
+    componentDidUpdate(){
+    	Tools.checkToken()
+    }
+
     createPost(){
     	this.setState({visible:true})
     	Tools.onCreatePost()
@@ -61,6 +67,7 @@ class Home extends React.Component {
     		"title":title
     	}
     	Tools.onCreatePost(obj)
+
     }
 
     changeContent(e){
@@ -91,6 +98,7 @@ class Home extends React.Component {
 			  <Button variant="contained" style={!this.state.visible ? {"display":"none"} : {"display":"inherit"}} onClick={this.sendPost}>Publiez</Button>
 			  </div>
   			</div>
+
   			{this.props.init ? this.props.init.map((e,i) => {
   					return(<List className={useStyles.root} key={i}>
 	      			<ListItem alignItems="flex-start">

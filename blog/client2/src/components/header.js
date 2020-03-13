@@ -52,7 +52,7 @@ class Header extends React.Component {
 				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/dashboard" title="dashboard">Dashboard</Link></span>
 				      </li>
 				      <li className="nav-item">
-				        <span className="nav-link active"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/contact" title="contact">Contact</Link></span>
+				        <span className="nav-link active"><Link style={{"textDecoration": "none","fontSize":"17px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/contact" title="contact"><i class="fa fa-bell-o" aria-hidden="true"></i></Link></span>
 				      </li>
 				      {
 				      	this.props.isConnected ? 

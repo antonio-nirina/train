@@ -11,7 +11,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import io from "socket.io-client";
+
 
 import Header from './header';
 import Footer from './footer';
@@ -67,8 +67,8 @@ class Home extends React.Component {
     		"content":content,
     		"title":title
     	}
-
-    	if (title) {
+		
+    	if (title && content) {
     		Tools.onCreatePost(obj)	
     	}
     }
@@ -137,8 +137,6 @@ class Home extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 	let posts = state.user.listPost;
-	let notif = state.user.notif;
-console.log("xxxx_n", notif)
 	let _st = '';
 	let list = '';
 
@@ -152,7 +150,6 @@ console.log("xxxx_n", notif)
 	return {
 		params: ownProps,
 		init:list,
-		notification:notif ? notif : "" 
 	}
 }
 

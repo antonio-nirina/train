@@ -94,7 +94,6 @@ exports.signin = function(req, res, next) {
     	email:email
     };
 	User.findOne({ email: email }, function(err, resp) {
-
 		if (err || !resp) {
 			return res.json({
               success : false,

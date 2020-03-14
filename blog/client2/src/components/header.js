@@ -2,7 +2,33 @@ import React  from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
 import {signoutUser} from '../actions/logAction';
+import {profileHandler} from "../actions/userAction";
+import "../assets/style/header.css";
+
+const useStyles = makeStyles(theme => ({
+	root: {
+	  width: '100%',
+	  maxWidth: 360,
+	  backgroundColor: theme.palette.background.paper,
+	},
+	inline: {
+	  display: 'inline',
+	},
+  }));
+
+
 
 const debounce = (func, wait) => {
   let timeout
@@ -17,13 +43,15 @@ class Header extends React.Component {
 	    super(props);
 	    this.state = {
 	      scrollPositionY: 0,
-	      open:false,
+		  open:false,
+		  numberNotif:0
 	    }
 	    this.handleToggle = this.handleToggle.bind(this)
   	}
 
 	componentDidMount() {
-    	window.addEventListener('scroll', debounce(this.handleScroll, 32))
+		window.addEventListener('scroll', debounce(this.handleScroll, 32));
+		this.props.profileHandler();
   	}
 
   	componentWillUnmount() {
@@ -39,7 +67,10 @@ class Header extends React.Component {
   		console.log("eeee")
   	}
 
-	render() {	
+	render() {
+		let arr = []
+		arr.push(this.props.notification)
+		console.log(arr)
 		return(
 			<nav className={(!!this.state.scrollPositionY) ? 'navbar navbar-expand-lg navbar-light bg-light isScrolling' : 'navbar navbar-expand-lg navbar-light bg-light'}  style={{'marginBottom':'26px'}}>
 			 {/*eslint-disable */}
@@ -59,27 +90,32 @@ class Header extends React.Component {
 				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/dashboard" title="dashboard">Dashboard</Link></span>
 				      </li>
 				      <li className="nav-item">
-				        <span className="nav-link active dropdown"><Link style={{"textDecoration": "none","fontSize":"17px","paddingRight":".5rem","paddingLeft":".5rem"}}  title="contact"><i className="fa fa-bell-o dropdown-toggle"
-				        onClick={this.handleToggle} 
-				        aria-hidden="true"
-				        id="dropdownMenuButton" 
-				        data-toggle="dropdown" 
-				        aria-haspopup="true" 
-				        aria-expanded="false" 
-				        ></i>
-			          	<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						    <Link className="dropdown-item" >Action</Link>
-						    <Link className="dropdown-item" >Another action</Link>
-						    <Link className="dropdown-item" >Something else here</Link>
-					  	</div>
-
-				        </Link></span>
+				        <div className="nav-link active dropdown" tyle={{"textDecoration": "none","fontSize":"17px","paddingRight":".5rem","paddingLeft":".5rem" }}  title="contact">
+							<i className={arr[0] ? "fa fa-bell-o dropdown-toggle notif":"fa fa-bell-o dropdown-toggle"}
+							onClick={this.handleToggle} 
+							aria-hidden="true"
+							id="dropdownMenuButton" 
+							data-toggle="dropdown" 
+							aria-haspopup="true" 
+							aria-expanded="false"
+							style={{"color":"#007bff"}} 
+							></i>
+							<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								{
+									arr[0] ? arr.map((e,i) => {
+										return(
+											<Link to="/" className="dropdown-item" >Action</Link>
+										)
+									}) : (<a className="dropdown-item" ></a>)
+								}
+							</div>
+						</div>
 				      </li>
 				      {
 				      	this.props.isConnected ? 
 				      	(<li className="nav-item dropdown">
 					        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					          <img style={{"width":"36px","borderRadius":"102px"}} src={this.props.profil ? this.props.profil.avatar : require('../assets/image/user.png')} />
+					          <img style={{"width":"23px","borderRadius":"102px"}} src={this.props.profil ? this.props.profil.avatar : require('../assets/image/user.png')} />
 					        </a>
 					        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
 					          <span className="dropdown-item" >
@@ -110,6 +146,8 @@ class Header extends React.Component {
 function mapStateToProps(state) {
 	let a_status = state.login.authenticated;
 	let profile = state.user.profils;
+	let notif = state.user.notif;
+// console.log("xxxx_notif", notif)
 	let init = ''
 	let list = "";
 
@@ -123,8 +161,9 @@ function mapStateToProps(state) {
 
 	return {
 		isConnected: init ? true : false,
-		profil:list
+		profil:list,
+		notification:notif ? notif : "" 
 	}
 }
 
-export default connect(mapStateToProps,{signoutUser})(Header);
+export default connect(mapStateToProps,{signoutUser,profileHandler})(Header);

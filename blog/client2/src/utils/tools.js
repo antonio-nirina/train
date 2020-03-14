@@ -12,18 +12,19 @@ const Tools = {
 					token: token
 				})
 			})
-			
+			return true;			
 		}
 	},
-	 checkToken:function() {
+	 /*checkToken:function() {
 	// const token = localStorage.getItem('token');
 		const socket = io("http://localhost:8080/")
 		socket.on("new_post",function({posts}) {
 			if (posts) {
 				console.log('dataxx111x', posts)
+				return posts
 			}
 		})
-	},
+	},*/
 	onLikeSocket : function(){
 		const token = localStorage.getItem('token');
 		if (token) {
@@ -37,6 +38,7 @@ const Tools = {
 	onCreatePost : function(data){
 		const token = localStorage.getItem('token');
 		const socket = io("http://localhost:8080/")
+
 		if (token) {
       		socket.on("connect",() => {
 				socket.emit("create_post",{

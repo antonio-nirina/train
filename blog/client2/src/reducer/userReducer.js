@@ -2,7 +2,8 @@ import {
     REGISTER,
     POSTLIST,
     POST_CREATE,
-    FETCH_PROFILE
+    FETCH_PROFILE,
+    FETCH_NOTIF
 } from '../actions/types';
 
 export default function (state = {}, action) {
@@ -15,6 +16,8 @@ export default function (state = {}, action) {
             return {...state,created:action.res}
         case FETCH_PROFILE:
             return {...state,profils:action.res}
+        case FETCH_NOTIF:
+            return {...state,notif:action.res}
 	    default:
             return state;
     }

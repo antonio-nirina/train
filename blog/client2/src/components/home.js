@@ -15,7 +15,7 @@ import io from "socket.io-client";
 
 import Header from './header';
 import Footer from './footer';
-import {listPost,createPost} from "../actions/userAction";
+import {listPost,createPost,getNotificationPost} from "../actions/userAction";
 import Tools from "../utils/tools";
 
 const useStyles = makeStyles(theme => ({
@@ -37,6 +37,7 @@ class Home extends React.Component {
     		visible:false,
     		content:"",
     		title:"",
+    		notif:0
     	}
     	this.createPost = this.createPost.bind(this);
     	this.sendPost = this.sendPost.bind(this);
@@ -50,8 +51,8 @@ class Home extends React.Component {
     	this.props.listPost()
     }
 
-    componentDidUpdate(){
-    	Tools.checkToken()
+    componentDidUpdate(prev){
+    	this.props.getNotificationPost()
     }
 
     createPost(){
@@ -66,8 +67,10 @@ class Home extends React.Component {
     		"content":content,
     		"title":title
     	}
-    	Tools.onCreatePost(obj)
 
+    	if (title) {
+    		Tools.onCreatePost(obj)	
+    	}
     }
 
     changeContent(e){
@@ -134,7 +137,8 @@ class Home extends React.Component {
 
 function mapStateToProps(state, ownProps) {
 	let posts = state.user.listPost;
-
+	let notif = state.user.notif;
+console.log("xxxx_n", notif)
 	let _st = '';
 	let list = '';
 
@@ -147,8 +151,9 @@ function mapStateToProps(state, ownProps) {
 
 	return {
 		params: ownProps,
-		init:list 
+		init:list,
+		notification:notif ? notif : "" 
 	}
 }
 
-export default connect(mapStateToProps,{listPost,createPost})(Home);
+export default connect(mapStateToProps,{listPost,createPost,getNotificationPost})(Home);

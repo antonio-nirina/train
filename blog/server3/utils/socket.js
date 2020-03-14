@@ -47,7 +47,7 @@ const webSocket = function(server){
 	    				content : data.content,
 	    				user:resp
 	    			}
-	                // console.log(post)
+	                console.log(post)
 	    			socket.broadcast.emit('new_post',{posts:post})
 	    		})	
 			}

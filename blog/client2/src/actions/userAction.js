@@ -1,5 +1,5 @@
-import {REGISTER,POSTLIST,POST_CREATE,ADD_LIKE,FETCH_PROFILE} from './types';
-import Tools from "../utils/tools";
+import {REGISTER,POSTLIST,POST_CREATE,ADD_LIKE,FETCH_PROFILE,FETCH_NOTIF} from './types';
+import io from "socket.io-client";
 // import axios from 'axios';
 
 export function register(data,historyPush){
@@ -130,3 +130,17 @@ export function updateAvatar(obj) {
        
     }
 }
+
+export function getNotificationPost() {
+  return function(dispatch) {
+    const socket = io("http://localhost:8080/")
+    socket.on("new_post",function({posts}) {
+      if (posts) {
+        dispatch({
+          type: FETCH_NOTIF,
+          res: posts,
+        });
+      }
+    })
+  }
+ }

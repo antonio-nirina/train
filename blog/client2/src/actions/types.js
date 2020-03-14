@@ -6,3 +6,4 @@ export const POST_CREATE = "post_create";
 export const ADD_LIKE = "add_like";
 export const FETCH_PROFILE = "fetch_profile";
 export const EDIT_AVATAR = "edit_avatar";
+export const FETCH_NOTIF = "fetch_notif";

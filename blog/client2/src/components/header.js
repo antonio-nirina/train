@@ -1,6 +1,7 @@
 import React  from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+
 import {signoutUser} from '../actions/logAction';
 
 const debounce = (func, wait) => {
@@ -15,8 +16,10 @@ class Header extends React.Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {
-	      scrollPositionY: 0
+	      scrollPositionY: 0,
+	      open:false,
 	    }
+	    this.handleToggle = this.handleToggle.bind(this)
   	}
 
 	componentDidMount() {
@@ -30,6 +33,10 @@ class Header extends React.Component {
   	handleScroll = () => {
     	const scrollPositionY = +window.scrollY
     	return this.setState({ scrollPositionY })
+  	}
+
+  	handleToggle(){
+  		console.log("eeee")
   	}
 
 	render() {	
@@ -52,7 +59,21 @@ class Header extends React.Component {
 				        <span className="nav-link"><Link style={{"textDecoration": "none","fontSize":"15px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/dashboard" title="dashboard">Dashboard</Link></span>
 				      </li>
 				      <li className="nav-item">
-				        <span className="nav-link active"><Link style={{"textDecoration": "none","fontSize":"17px","paddingRight":".5rem","paddingLeft":".5rem"}} to="/contact" title="contact"><i class="fa fa-bell-o" aria-hidden="true"></i></Link></span>
+				        <span className="nav-link active dropdown"><Link style={{"textDecoration": "none","fontSize":"17px","paddingRight":".5rem","paddingLeft":".5rem"}}  title="contact"><i className="fa fa-bell-o dropdown-toggle"
+				        onClick={this.handleToggle} 
+				        aria-hidden="true"
+				        id="dropdownMenuButton" 
+				        data-toggle="dropdown" 
+				        aria-haspopup="true" 
+				        aria-expanded="false" 
+				        ></i>
+			          	<div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						    <Link className="dropdown-item" >Action</Link>
+						    <Link className="dropdown-item" >Another action</Link>
+						    <Link className="dropdown-item" >Something else here</Link>
+					  	</div>
+
+				        </Link></span>
 				      </li>
 				      {
 				      	this.props.isConnected ? 

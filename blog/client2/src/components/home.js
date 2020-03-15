@@ -11,6 +11,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 
 import Header from './header';
@@ -52,7 +53,7 @@ class Home extends React.Component {
     }
 
     componentDidUpdate(prev){
-    	this.props.getNotificationPost()
+		this.props.getNotificationPost()    	
     }
 
     createPost(){
@@ -91,6 +92,7 @@ class Home extends React.Component {
 			  	<label>
 			    Title :
 			    	<input onChange={this.changeTitle} type="text" name="name" />
+			    	<TextField id="outlined-basic" onChange={this.changeTitle} label="Title" variant="outlined" />
 			  </label>
 			  </div>
 			  <div>
@@ -103,30 +105,31 @@ class Home extends React.Component {
   			</div>
 
   			{this.props.init ? this.props.init.map((e,i) => {
-  					return(<List className={useStyles.root} key={i}>
-	      			<ListItem alignItems="flex-start">
-				        <ListItemAvatar>
-				          <Avatar alt="Remy Sharp" src={require('../assets/image/bus-lite.jpg')} />
-				        </ListItemAvatar>
-			        	<ListItemText
-			          		primary={e.title ? e.title : ""}
-			          		secondary={
-				            <React.Fragment>
-				              <Typography
-				                component="span"
-				                variant="body2"
-				                className={useStyles.inline}
-				                color="textPrimary"
-				              >
-				                {e.user ? e.user.firstName +" "+ e.user.lastName  : e.authorName}
-				              </Typography>
-				              {"— "+e.content}
-				            </React.Fragment>
-			          		}
-			        	/>
-		      		</ListItem>
-	      		<Divider variant="inset" component="li" />
-    		</List>)	
+  					return(
+  						<List className={useStyles.root} key={i}>
+			      			<ListItem alignItems="flex-start">
+						        <ListItemAvatar>
+						          <Avatar alt="Remy Sharp" src={require('../assets/image/bus-lite.jpg')} />
+						        </ListItemAvatar>
+					        	<ListItemText
+					          		primary={e.title ? e.title : ""}
+					          		secondary={
+						            <React.Fragment>
+						              <Typography
+						                component="span"
+						                variant="body2"
+						                className={useStyles.inline}
+						                color="textPrimary"
+						              >
+						                {e.user ? e.user.firstName +" "+ e.user.lastName  : e.authorName}
+						              </Typography>
+						              {"— "+e.content}
+						            </React.Fragment>
+					          		}
+					        	/>
+				      		</ListItem>
+			      		<Divider variant="inset" component="li" />
+		    		</List>)	
   			}) : null}
         	<Footer />
   			</div>

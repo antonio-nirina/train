@@ -19,7 +19,7 @@ import "../assets/style/header.css";
 
 const useStyles = makeStyles(theme => ({
 	root: {
-	  width: '100%',
+	  width: '10%',
 	  maxWidth: 360,
 	  backgroundColor: theme.palette.background.paper,
 	},
@@ -44,9 +44,11 @@ class Header extends React.Component {
 	    this.state = {
 	      scrollPositionY: 0,
 		  open:false,
-		  numberNotif:0
+		  numberNotif:0,
+		  notif:""
 	    }
 	    this.handleToggle = this.handleToggle.bind(this)
+	    this.removeColor = this.removeColor.bind(this)
   	}
 
 	componentDidMount() {
@@ -64,13 +66,21 @@ class Header extends React.Component {
   	}
 
   	handleToggle(){
+  		this.setState({
+  			notif:"",
+  			numberNotif:0
+  		})
   		console.log("eeee")
+  	}
+
+  	removeColor(){
+
   	}
 
 	render() {
 		let arr = []
 		arr.push(this.props.notification)
-		console.log(arr)
+		
 		return(
 			<nav className={(!!this.state.scrollPositionY) ? 'navbar navbar-expand-lg navbar-light bg-light isScrolling' : 'navbar navbar-expand-lg navbar-light bg-light'}  style={{'marginBottom':'26px'}}>
 			 {/*eslint-disable */}
@@ -91,7 +101,7 @@ class Header extends React.Component {
 				      </li>
 				      <li className="nav-item">
 				        <div className="nav-link active dropdown" tyle={{"textDecoration": "none","fontSize":"17px","paddingRight":".5rem","paddingLeft":".5rem" }}  title="contact">
-							<i className={arr[0] ? "fa fa-bell-o dropdown-toggle notif":"fa fa-bell-o dropdown-toggle"}
+							<i className={"fa fa-bell-o dropdown-toggle "+(arr[0] ? "notif" : "")  }
 							onClick={this.handleToggle} 
 							aria-hidden="true"
 							id="dropdownMenuButton" 
@@ -104,7 +114,32 @@ class Header extends React.Component {
 								{
 									arr[0] ? arr.map((e,i) => {
 										return(
-											<Link to="/" className="dropdown-item" >Action</Link>
+											<Link to="/" className="dropdown-item">
+												<List className={useStyles.root} key={i}>
+									      			<ListItem alignItems="flex-start">
+												        <ListItemAvatar>
+												          <Avatar alt="Remy Sharp" src={e.avatar} />
+												        </ListItemAvatar>
+											        	<ListItemText
+											          		primary={e.title}
+											          		secondary={
+												            <React.Fragment>
+												              <Typography
+												                component="span"
+												                variant="body2"
+												                className={useStyles.inline}
+												                color="textPrimary"
+												              >
+												                {e.name}
+												              </Typography>
+												              {"— "+e.content}
+												            </React.Fragment>
+											          		}
+											        	/>
+										      		</ListItem>
+									      			<Divider variant="inset" component="li" />
+								    			</List>
+											</Link>
 										)
 									}) : (<a className="dropdown-item" ></a>)
 								}
